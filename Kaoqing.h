@@ -33,7 +33,7 @@ public:
 
 	sqlite3 * db;
 
-	
+	TimeDiff(SYSTEMTIME  left,SYSTEMTIME  right)  ;
 	
 
 protected:

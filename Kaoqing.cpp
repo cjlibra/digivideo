@@ -30,6 +30,8 @@ static CKaoqing *thisp = NULL;
 static CString imgPathlast="";
 static int onlyone = 0;
 
+static char filemovie[256];
+
 static CString username_db, password_db;
 PLAY_HANDLE HANDLEL;
 
@@ -180,6 +182,7 @@ void CKaoqing::OnBnClickedBtloginKaoqing()
 	}
 }
 
+
 void CKaoqing::Connectvideo()
 {
 	
@@ -188,13 +191,24 @@ void CKaoqing::Connectvideo()
 		delete test;
 		test = NULL;
 	}
+	TCHAR chBuf[256];
 	
+	SYSTEMTIME stLocal;  
+    
+
 	if(g_server_id != INVALID_HANDLE)
 	{
 		test = new net_video_test(g_server_id,0);//m_slots.GetCurSel());
 		test->start_preview(GetDlgItem(IDC_VIDEO_KAOQING2)->GetSafeHwnd(),0);//m_cbo_connect_mode.GetCurSel());
 		test->register_draw(draw_fun,(long)this);
-		test->save_to_file("jj.avi");
+		::GetLocalTime(&stLocal);  
+     //显示时间的间隔。  
+        wsprintf(chBuf,_T("%u-%u-%u %u-%u-%u %u %d"), 
+               stLocal.wYear, stLocal.wMonth, stLocal.wDay,  
+               stLocal.wHour, stLocal.wMinute, stLocal.wSecond,  
+               stLocal.wMilliseconds,stLocal.wDayOfWeek);  
+	    sprintf(filemovie,"%s+%s.mp4","0001",chBuf);
+		test->save_to_file(filemovie);
 		/*
 		m_color_adjust_enable = FALSE;
 		m_bright.SetPos(0);
@@ -331,6 +345,18 @@ bool CKaoqing::Show_picture(CString imgPath)
 	return TRUE;
 }
 
+ __int64 CKaoqing::TimeDiff(SYSTEMTIME  left,SYSTEMTIME  right)  
+{  
+           CTime  tmLeft(left.wYear,left.wMonth,left.wDay,0,0,0);  
+           CTime  tmRight(left.wYear,left.wMonth,left.wDay,0,0,0);  
+           CTimeSpan  sp;  
+           sp  =  tmLeft  -  tmRight;
+           long  lLMinllis  =  (left.wHour*3600  +  left.wMinute*60  +  left.wSecond)*1000  +  left.wMilliseconds;  
+           long  lRMinllis  =  (right.wHour*3600  +  right.wMinute*60  +  right.wSecond)*1000  +  right.wMilliseconds;  
+
+           return  (__int64)sp.GetDays()*86400000  +  (lLMinllis  -  lRMinllis);  //此处返回毫秒，可用根据自己的格式需要进行转换，如时分秒
+}
+
 void CKaoqing::GetRfidPic(CString str)
 {
 	static char tmpuid[20];
@@ -385,8 +411,57 @@ void CKaoqing::GetRfidPic(CString str)
 		printf(sqlite3_errmsg(thisp->db));
 		return;
 	 }
+	 char sSQL6[255]="insert into vinfo(labelnum,starttime,endtime,filename,endflag) values('%s','%s','%s','%s',%d);";
+	 for (int i=0;i<1024;i++){
+		   if (labelinfo[i].sLabel != labelnum){
+			   if (labelinfo[i].sLabel == ""){
+				   labelinfo[i].sLabel = labelnum;
+				   labelinfo[i].labelleft = 0;
+				   labelinfo[i].timeLast = stLocal;
+				   sprintf(sSQL6,"insert into vinfo(labelnum,starttime,filename,endflag) values('%s','%s','%s',%d);",labelnum,datetimestr,filemovie,0);
+				   ret = sqlite3_exec( thisp->db, sSQL6, 0, 0, &pErrMsg);
+	               if ( ret != SQLITE_OK ){
+		                //AfxMessageBox(sqlite3_errmsg(this->myparent->db));
+		                printf(sqlite3_errmsg(thisp->db));
+		                break;
+	               }
+				   break;;
+			   }else{
+				   continue;
+			   }
+		   }
+		   if (TimeDiff(stLocal, labelinfo[i].timeLast)> 3*60*1000 ) {
+			   labelinfo[i].labelleft = 0;
+			   labelinfo[i].timeLast = stLocal;
+			   sprintf(sSQL6,"insert into vinfo(labelnum,starttime,filename,endflag) values('%s','%s','%s',%d);",labelnum,datetimestr,filemovie,0);
+			   ret = sqlite3_exec( thisp->db, sSQL6, 0, 0, &pErrMsg);
+	           if ( ret != SQLITE_OK ){
+		            //AfxMessageBox(sqlite3_errmsg(this->myparent->db));
+		            printf(sqlite3_errmsg(thisp->db));
+		            break;
+	           }
+
+		   }
+		   if (labelinfo[i].labelleft > 0 ){
+			   labelinfo[i].labelleft++;
+			   labelinfo[i].timeLast = stLocal;
+		   }else{
+
+			   labelinfo[i].labelleft = 1;
+			   labelinfo[i].timeLast = stLocal;
+			   sprintf(sSQL6,"insert into vinfo(labelnum,starttime,filename,endflag) values('%s','%s','%s',%d);",labelnum,datetimestr,filemovie,0);
+			   ret = sqlite3_exec( thisp->db, sSQL6, 0, 0, &pErrMsg);
+	           if ( ret != SQLITE_OK ){
+		        //AfxMessageBox(sqlite3_errmsg(this->myparent->db));
+		          printf(sqlite3_errmsg(thisp->db));
+		          break;
+	           }
+
+		   }
 
 
+
+	 }
 	
 	
 
