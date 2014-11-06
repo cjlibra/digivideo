@@ -4,6 +4,7 @@
 #include "sqlite3.h"
 
 
+
 // CKaoqing ¶Ô»°¿ò
 
 class CKaoqing : public CDialogEx
@@ -32,8 +33,7 @@ public:
 	LONG m_bmH;
 
 	sqlite3 * db;
-
-	TimeDiff(SYSTEMTIME  left,SYSTEMTIME  right)  ;
+	
 	
 
 protected:

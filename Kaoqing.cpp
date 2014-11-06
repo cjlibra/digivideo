@@ -12,12 +12,7 @@
 
 #include "DlgRenyuan.h"
 
-typedef struct {
-	CString sLabel;
-    SYSTEMTIME timeLast;
-	int  labelleft;
 
-}LABELINFO;
 // CKaoqing 对话框
 static USER_HANDLE g_server_id = INVALID_HANDLE;
 static   int g_window_count = 0;
@@ -38,6 +33,16 @@ PLAY_HANDLE HANDLEL;
 static void CALLBACK draw_fun(PLAY_HANDLE handle,HDC hDc,LONG nUser);
 static int _sql_callback(void * notused, int argc, char ** argv, char ** szColName);
 
+typedef struct _LABELINFO{
+	CString sLabel;
+    SYSTEMTIME timeLast;
+	int  labelleft;
+	int id;
+
+}LABELINFO;
+static LABELINFO labelinfo[1024];
+
+static __int64	TimeDiff(SYSTEMTIME  left,SYSTEMTIME  right)  ;
 
 
 
@@ -57,13 +62,15 @@ CKaoqing::~CKaoqing()
 BOOL CKaoqing::OnInitDialog()
 {
 	CDialog::OnInitDialog();
-	LABELINFO labelinfo[1024];
+	
 	for (int i=0;i<1024;i++){
 		labelinfo[i].sLabel = "";
 //		labelinfo[i].timeLast=0;
 		labelinfo[i].labelleft = 0;
+		labelinfo[i].id = 0;
 
 	}
+	SetTimer(3,1000*60,NULL);
 
 	thisp = this;
 
@@ -345,7 +352,7 @@ bool CKaoqing::Show_picture(CString imgPath)
 	return TRUE;
 }
 
- __int64 CKaoqing::TimeDiff(SYSTEMTIME  left,SYSTEMTIME  right)  
+ __int64  TimeDiff(SYSTEMTIME  left,SYSTEMTIME  right)  
 {  
            CTime  tmLeft(left.wYear,left.wMonth,left.wDay,0,0,0);  
            CTime  tmRight(left.wYear,left.wMonth,left.wDay,0,0,0);  
@@ -416,49 +423,52 @@ void CKaoqing::GetRfidPic(CString str)
 		   if (labelinfo[i].sLabel != labelnum){
 			   if (labelinfo[i].sLabel == ""){
 				   labelinfo[i].sLabel = labelnum;
-				   labelinfo[i].labelleft = 0;
+				   labelinfo[i].labelleft = 1;
 				   labelinfo[i].timeLast = stLocal;
-				   sprintf(sSQL6,"insert into vinfo(labelnum,starttime,filename,endflag) values('%s','%s','%s',%d);",labelnum,datetimestr,filemovie,0);
-				   ret = sqlite3_exec( thisp->db, sSQL6, 0, 0, &pErrMsg);
+				   sprintf(sSQL6,"insert into vinfo(lablenum,starttime,filename,endflag) values('%s','%s','%s',%d);",labelnum,datetimestr,filemovie,0);
+				   ret = sqlite3_exec( thisp->db, sSQL6, 0, 0, &pErrMsg);				  
 	               if ( ret != SQLITE_OK ){
 		                //AfxMessageBox(sqlite3_errmsg(this->myparent->db));
 		                printf(sqlite3_errmsg(thisp->db));
 		                break;
 	               }
+				   labelinfo[i].id = sqlite3_last_insert_rowid( thisp->db);
 				   break;;
 			   }else{
 				   continue;
 			   }
 		   }
 		   if (TimeDiff(stLocal, labelinfo[i].timeLast)> 3*60*1000 ) {
-			   labelinfo[i].labelleft = 0;
-			   labelinfo[i].timeLast = stLocal;
-			   sprintf(sSQL6,"insert into vinfo(labelnum,starttime,filename,endflag) values('%s','%s','%s',%d);",labelnum,datetimestr,filemovie,0);
+			   labelinfo[i].labelleft = 1;
+			   char datetimestr1[255];
+			   sprintf(datetimestr1,("%04u-%02u-%02u %02u:%02u:%02u"),  \
+                          labelinfo[i].timeLast.wYear, labelinfo[i].timeLast.wMonth, labelinfo[i].timeLast.wDay,   \
+                          labelinfo[i].timeLast.wHour, labelinfo[i].timeLast.wMinute, labelinfo[i].timeLast.wSecond) ;
+			   sprintf(sSQL6,"update vinfo set endtime = '%s',endflag= %d where id = %d ;",datetimestr1,1,labelinfo[i].id );
 			   ret = sqlite3_exec( thisp->db, sSQL6, 0, 0, &pErrMsg);
 	           if ( ret != SQLITE_OK ){
 		            //AfxMessageBox(sqlite3_errmsg(this->myparent->db));
 		            printf(sqlite3_errmsg(thisp->db));
 		            break;
 	           }
-
-		   }
-		   if (labelinfo[i].labelleft > 0 ){
-			   labelinfo[i].labelleft++;
 			   labelinfo[i].timeLast = stLocal;
-		   }else{
-
-			   labelinfo[i].labelleft = 1;
-			   labelinfo[i].timeLast = stLocal;
-			   sprintf(sSQL6,"insert into vinfo(labelnum,starttime,filename,endflag) values('%s','%s','%s',%d);",labelnum,datetimestr,filemovie,0);
+			   sprintf(sSQL6,"insert into vinfo(lablenum,starttime,filename,endflag) values('%s','%s','%s',%d);",labelnum,datetimestr,filemovie,0);
 			   ret = sqlite3_exec( thisp->db, sSQL6, 0, 0, &pErrMsg);
 	           if ( ret != SQLITE_OK ){
-		        //AfxMessageBox(sqlite3_errmsg(this->myparent->db));
-		          printf(sqlite3_errmsg(thisp->db));
-		          break;
+		            //AfxMessageBox(sqlite3_errmsg(this->myparent->db));
+		            printf(sqlite3_errmsg(thisp->db));
+		            break;
 	           }
+			   labelinfo[i].id = sqlite3_last_insert_rowid( thisp->db);
+			   break;
 
+		   }else{
+		  
+			   labelinfo[i].labelleft++;
+			   labelinfo[i].timeLast = stLocal;
+			   break;
+		  
 		   }
-
 
 
 	 }
@@ -575,7 +585,36 @@ void CKaoqing::DrawImage(int x, int y, CDC *pDC)
 
  void CKaoqing::OnTimer(UINT_PTR nIDEvent)
  {
-	 // TODO: 在此添加消息处理程序代码和/或调用默认值
+	 SYSTEMTIME stLocal;  
+     ::GetLocalTime(&stLocal);  
+	 if (nIDEvent == 3){
+		 for (int i=0;i<1024;i++){
+			 if (labelinfo[i].sLabel == ""){
+				 break;
+			 }
+			 if (labelinfo[i].labelleft == 0){
+				 continue;
+			 }
+
+			if ( TimeDiff(stLocal,labelinfo[i].timeLast) > 3*60*1000){
+				char datetimestr1[255];
+				char sSQL6[255];
+				int ret =1;
+				char * pErrMsg = 0;
+				sprintf(datetimestr1,("%04u-%02u-%02u %02u:%02u:%02u"),  \
+							  labelinfo[i].timeLast.wYear, labelinfo[i].timeLast.wMonth, labelinfo[i].timeLast.wDay,   \
+							  labelinfo[i].timeLast.wHour, labelinfo[i].timeLast.wMinute, labelinfo[i].timeLast.wSecond) ;
+				sprintf(sSQL6,"update vinfo set endtime = '%s',endflag= %d where id = %d ;",datetimestr1,1,labelinfo[i].id );
+				ret = sqlite3_exec( thisp->db, sSQL6, 0, 0, &pErrMsg);
+				if ( ret != SQLITE_OK ){
+					  //AfxMessageBox(sqlite3_errmsg(this->myparent->db));
+					  printf(sqlite3_errmsg(thisp->db));
+					  break;
+				}
+				labelinfo[i].labelleft = 0;
+			}
+		 }
+	 }
 	 if (nIDEvent == 2){
 	   onlyone = 0;
 	   KillTimer(2);
