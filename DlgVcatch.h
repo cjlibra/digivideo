@@ -32,4 +32,5 @@ public:
 	afx_msg void OnBnClickedButton3();
 	afx_msg void OnBnClickedButton4();
 	int m_videopos;
+	afx_msg void OnClose();
 };

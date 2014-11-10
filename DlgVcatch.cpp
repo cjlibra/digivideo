@@ -20,6 +20,8 @@ static int _searchren_callback(void * notused, int argc, char ** argv, char ** s
 static int _searchlabelnum_callback(void * notused, int argc, char ** argv, char ** szColName);
 static CString GetDatetimeFromFile(CString filename);
 
+
+static void CALLBACK call_fun(PLAY_HANDLE handle,HDC hDc,LONG nUser);
 // CDlgVcatch 对话框
 
 IMPLEMENT_DYNAMIC(CDlgVcatch, CDialogEx)
@@ -71,6 +73,7 @@ BEGIN_MESSAGE_MAP(CDlgVcatch, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON2, &CDlgVcatch::OnBnClickedButton2)
 	ON_BN_CLICKED(IDC_BUTTON3, &CDlgVcatch::OnBnClickedButton3)
 	ON_BN_CLICKED(IDC_BUTTON4, &CDlgVcatch::OnBnClickedButton4)
+	ON_WM_CLOSE()
 END_MESSAGE_MAP()
 
 
@@ -162,13 +165,15 @@ void CDlgVcatch::OnBnClickedButton2()
         timeSpan = sTimeBegin - sTimeFile; 
         long expi_second = timeSpan.GetTotalSeconds();
 
+		timeSpan = sTimeEnd - sTimeFile ; 
+		long elapse_mov = timeSpan.GetTotalSeconds();
 		
 		msec = expi_second;
 		hwplay_stop(HANDLEL);
 		HANDLEL = hwplay_open_local_file(filename);
 		int totalmsec ;
 		
-		
+		hwplay_register_draw_fun(HANDLEL,call_fun,elapse_mov);
 	    hwplay_play(HANDLEL, GetDlgItem(IDC_STATIC_VIDEO)->GetSafeHwnd());
 
 		hwplay_pause(HANDLEL,TRUE);
@@ -179,7 +184,23 @@ void CDlgVcatch::OnBnClickedButton2()
 		hwplay_pause(HANDLEL,FALSE);
 
 }
+static void CALLBACK call_fun(PLAY_HANDLE handle,HDC hDc,LONG nUser)
+{
+	long elapse_mov  = nUser;
 
+	int msec = 0;
+	hwplay_get_played_msec(handle,&msec);
+	
+	if (msec >= elapse_mov*1000){
+
+		hwplay_pause(handle,TRUE);
+		TRACE("this is %d ,elapse is %d",msec,elapse_mov );
+		
+	}
+
+
+
+}
 
 static CString GetDatetimeFromFile(CString filename)
 {
@@ -198,7 +219,7 @@ void CDlgVcatch::OnBnClickedButton3()
 
 void CDlgVcatch::OnBnClickedButton4()
 {
-	// TODO: 在此添加控件通知处理程序代码
+	 
 	UpdateData(TRUE);
 	BOOL ret = hwplay_set_pos(HANDLEL ,m_videopos);
 	if (ret != TRUE){
@@ -207,4 +228,14 @@ void CDlgVcatch::OnBnClickedButton4()
 	//int mmmsec =0 ;
 //	hwplay_get_played_msec(HANDLEL,&mmmsec);
 	//TRACE("now is %d\n",mmmsec);
+}
+
+
+void CDlgVcatch::OnClose()
+{
+	// TODO: 在此添加消息处理程序代码和/或调用默认值
+
+	 hwplay_stop(HANDLEL);
+
+	CDialogEx::OnClose();
 }
