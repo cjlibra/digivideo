@@ -1,5 +1,7 @@
 #pragma once
 #include "afxcmn.h"
+#include "atlcomtime.h"
+#include "afxdtctl.h"
 
 
 // CDlgVcatch ¶Ô»°¿ò
@@ -23,4 +25,9 @@ protected:
 public:
 	afx_msg void OnBnClickedButton1();
 	CListCtrl m_listvideo;
+	CString m_name;
+	COleDateTime m_dateole;
+	CDateTimeCtrl m_datectrl;
+	afx_msg void OnBnClickedButton2();
+	afx_msg void OnBnClickedButton3();
 };
