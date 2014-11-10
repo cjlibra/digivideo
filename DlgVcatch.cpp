@@ -14,6 +14,7 @@ static int jj;
 static int idfromname;
 static CString labelnumfromid;
 static PLAY_HANDLE HANDLEL;
+static int msec;
 static int _searchvideo_callback(void * notused, int argc, char ** argv, char ** szColName);
 static int _searchren_callback(void * notused, int argc, char ** argv, char ** szColName);
 static int _searchlabelnum_callback(void * notused, int argc, char ** argv, char ** szColName);
@@ -27,6 +28,7 @@ CDlgVcatch::CDlgVcatch(CWnd* pParent /*=NULL*/)
 	: CDialogEx(CDlgVcatch::IDD, pParent)
 	, m_name(_T(""))
 	, m_dateole(COleDateTime::GetCurrentTime())
+	, m_videopos(0)
 {
 
 }
@@ -59,6 +61,7 @@ void CDlgVcatch::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT1, m_name);
 	DDX_DateTimeCtrl(pDX, IDC_DATETIMEPICKER1, m_dateole);
 	DDX_Control(pDX, IDC_DATETIMEPICKER1, m_datectrl);
+	DDX_Text(pDX, IDC_EDIT2, m_videopos);
 }
 
 
@@ -67,6 +70,7 @@ BEGIN_MESSAGE_MAP(CDlgVcatch, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON1, &CDlgVcatch::OnBnClickedButton1)
 	ON_BN_CLICKED(IDC_BUTTON2, &CDlgVcatch::OnBnClickedButton2)
 	ON_BN_CLICKED(IDC_BUTTON3, &CDlgVcatch::OnBnClickedButton3)
+	ON_BN_CLICKED(IDC_BUTTON4, &CDlgVcatch::OnBnClickedButton4)
 END_MESSAGE_MAP()
 
 
@@ -156,14 +160,23 @@ void CDlgVcatch::OnBnClickedButton2()
 
 		COleDateTimeSpan timeSpan;    //计算时间差
         timeSpan = sTimeBegin - sTimeFile; 
-        long expi_second = timeSpan.GetSeconds();
+        long expi_second = timeSpan.GetTotalSeconds();
 
-		int msec;
-		msec = expi_second/2;
+		
+		msec = expi_second;
 		hwplay_stop(HANDLEL);
-		HANDLEL = hwplay_open_local_file(filename);	
+		HANDLEL = hwplay_open_local_file(filename);
+		int totalmsec ;
+		
+		
 	    hwplay_play(HANDLEL, GetDlgItem(IDC_STATIC_VIDEO)->GetSafeHwnd());
-		hwplay_get_played_msec(HANDLEL,&msec);
+
+		hwplay_pause(HANDLEL,TRUE);
+		int rr = hwplay_get_total_msec(HANDLEL ,&totalmsec);
+		int vpos = (100 * msec*1000)/totalmsec ;
+		
+		hwplay_set_pos(HANDLEL ,vpos);
+		hwplay_pause(HANDLEL,FALSE);
 
 }
 
@@ -180,4 +193,18 @@ static CString GetDatetimeFromFile(CString filename)
 void CDlgVcatch::OnBnClickedButton3()
 {
 	 hwplay_stop(HANDLEL);
+}
+
+
+void CDlgVcatch::OnBnClickedButton4()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	UpdateData(TRUE);
+	BOOL ret = hwplay_set_pos(HANDLEL ,m_videopos);
+	if (ret != TRUE){
+		AfxMessageBox("can not set");
+	}
+	//int mmmsec =0 ;
+//	hwplay_get_played_msec(HANDLEL,&mmmsec);
+	//TRACE("now is %d\n",mmmsec);
 }

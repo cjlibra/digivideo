@@ -30,4 +30,6 @@ public:
 	CDateTimeCtrl m_datectrl;
 	afx_msg void OnBnClickedButton2();
 	afx_msg void OnBnClickedButton3();
+	afx_msg void OnBnClickedButton4();
+	int m_videopos;
 };

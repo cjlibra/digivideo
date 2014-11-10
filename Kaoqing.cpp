@@ -28,7 +28,7 @@ static int onlyone = 0;
 static char filemovie[256];
 
 static CString username_db, password_db;
-PLAY_HANDLE HANDLEL;
+static PLAY_HANDLE HANDLEL;
 
 static void CALLBACK draw_fun(PLAY_HANDLE handle,HDC hDc,LONG nUser);
 static int _sql_callback(void * notused, int argc, char ** argv, char ** szColName);
@@ -303,7 +303,7 @@ void CKaoqing::OnBnClickedButton1()
 
 	
 	 hwplay_play(HANDLEL, GetDlgItem(IDC_STATIC1)->GetSafeHwnd());
-	// hwplay_set_pos(HANDLEL ,2);
+	//hwplay_set_pos(HANDLEL ,2);
 	 return;
 
 	int quality = 0;
@@ -669,10 +669,12 @@ void CKaoqing::DrawImage(int x, int y, CDC *pDC)
  void CKaoqing::OnBnClickedButton3()
  {
 	 // TODO: 在此添加控件通知处理程序代码
+	 hwplay_set_pos(HANDLEL ,20);
+	 return;
 	 int wher =0 ;
 	 int msec = 0;
 	 hwplay_get_pos( HANDLEL,&wher );
-	 // hwplay_set_pos(HANDLEL ,2);
+	 
 	 hwplay_get_played_msec(HANDLEL,&msec);
 	
 	TRACE("%d   %d\n",wher ,msec);
