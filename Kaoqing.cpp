@@ -70,7 +70,7 @@ BOOL CKaoqing::OnInitDialog()
 		labelinfo[i].id = 0;
 
 	}
-	SetTimer(3,1000*60,NULL);
+	SetTimer(3,1000*10,NULL);
 
 	thisp = this;
 
@@ -438,7 +438,7 @@ void CKaoqing::GetRfidPic(CString str)
 				   continue;
 			   }
 		   }
-		   if (TimeDiff(stLocal, labelinfo[i].timeLast)> 1*60*1000 ) {
+		   if (TimeDiff(stLocal, labelinfo[i].timeLast)> 10*1000 ) {
 			   labelinfo[i].labelleft = 1;
 			   char datetimestr1[255];
 			   sprintf(datetimestr1,("%04u-%02u-%02u %02u:%02u:%02u"),  \
@@ -596,7 +596,7 @@ void CKaoqing::DrawImage(int x, int y, CDC *pDC)
 				 continue;
 			 }
 
-			if ( TimeDiff(stLocal,labelinfo[i].timeLast) > 1*60*1000){
+			if ( TimeDiff(stLocal,labelinfo[i].timeLast) > 10*1000){
 				char datetimestr1[255];
 				char sSQL6[255];
 				int ret =1;
