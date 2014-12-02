@@ -40,6 +40,7 @@
 #define IDD_RENYUAN_DLG                 156
 #define IDD_DLG_RECORD                  157
 #define IDD_DLG_VCATCH                  158
+#define IDD_IPHOST_DLG                  159
 #define IDC_VIDEO                       1000
 #define IDC_IPADDRESS1                  1001
 #define IDC_EDIT1                       1002
@@ -305,14 +306,15 @@
 #define IDC_STATIC_BMP                  1199
 #define IDC_STATIC_RENTOU               1200
 #define IDC_STATIC_VIDEO                1201
+#define IDC_TREE1                       1202
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        159
+#define _APS_NEXT_RESOURCE_VALUE        160
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1202
+#define _APS_NEXT_CONTROL_VALUE         1203
 #define _APS_NEXT_SYMED_VALUE           104
 #endif
 #endif

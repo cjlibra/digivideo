@@ -11,6 +11,7 @@
 //#include "sqlite3ext.h"
 
 #include "DlgRenyuan.h"
+#include "IphostDlg.h"
 
 
 // CKaoqing 对话框
@@ -108,6 +109,7 @@ void CKaoqing::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_STATIC1, m_PictureControl);
 	DDX_Control(pDX, IDC_USERNAME, m_username);
 	DDX_Control(pDX, IDC_PASSWORD, m_password);
+	DDX_Control(pDX, IDC_COMBO1, m_combochanctrl);
 }
 
 
@@ -121,6 +123,7 @@ BEGIN_MESSAGE_MAP(CKaoqing, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON2, &CKaoqing::OnBnClickedButton2)
 	ON_WM_CLOSE()
 	ON_BN_CLICKED(IDC_BUTTON3, &CKaoqing::OnBnClickedButton3)
+	ON_CBN_SELCHANGE(IDC_COMBO1, &CKaoqing::OnCbnSelchangeCombo1)
 END_MESSAGE_MAP()
 
 
@@ -156,9 +159,9 @@ void CKaoqing::OnBnClickedBtloginKaoqing()
 			for(int i = 0; i < g_window_count; i++)
 			{
 				sprintf(str,"通道%d",i + 1);
-			//	m_slots.AddString(str);
+			 	this->m_combochanctrl.AddString(str);
 			}
-		//	m_slots.SetCurSel(0);
+		 	this->m_combochanctrl.SetCurSel(0);
 			
 		//	m_svr_type.ResetContent();	
 			
@@ -205,9 +208,10 @@ void CKaoqing::Connectvideo()
 
 	if(g_server_id != INVALID_HANDLE)
 	{
-		test = new net_video_test(g_server_id,0);//m_slots.GetCurSel());
+		test = new net_video_test(g_server_id,0);
 		test->start_preview(GetDlgItem(IDC_VIDEO_KAOQING2)->GetSafeHwnd(),0);//m_cbo_connect_mode.GetCurSel());
 		test->register_draw(draw_fun,(long)this);
+		test->enable_audio_preview(1);
 		::GetLocalTime(&stLocal);  
      //显示时间的间隔。  
         wsprintf(chBuf,_T("%u-%u-%u %u-%u-%u %u %d"), 
@@ -216,6 +220,7 @@ void CKaoqing::Connectvideo()
                stLocal.wMilliseconds,stLocal.wDayOfWeek);  
 	    sprintf(filemovie,"%s+%s.mp4","0001",chBuf);
 		test->save_to_file(filemovie);
+
 		/*
 		m_color_adjust_enable = FALSE;
 		m_bright.SetPos(0);
@@ -299,11 +304,15 @@ void CKaoqing::OnBnClickedButton1()
 {
 	// TODO: 在此添加控件通知处理程序代码
 
-	 HANDLEL = hwplay_open_local_file("jj.mp4");
+	 HANDLEL = hwplay_open_local_file("zzzzz.mp4");
 
 	
 	 hwplay_play(HANDLEL, GetDlgItem(IDC_STATIC1)->GetSafeHwnd());
+
 	//hwplay_set_pos(HANDLEL ,2);
+	 hwplay_open_sound(HANDLEL);
+
+	hwplay_set_audio_volume(HANDLEL,0xffffffff);
 	 return;
 
 	int quality = 0;
@@ -669,14 +678,42 @@ void CKaoqing::DrawImage(int x, int y, CDC *pDC)
  void CKaoqing::OnBnClickedButton3()
  {
 	 // TODO: 在此添加控件通知处理程序代码
-	 hwplay_set_pos(HANDLEL ,20);
-	 return;
-	 int wher =0 ;
-	 int msec = 0;
-	 hwplay_get_pos( HANDLEL,&wher );
+	CIphostDlg dlg;
+	dlg.DoModal();
 	 
-	 hwplay_get_played_msec(HANDLEL,&msec);
+ }
+
+
+ void CKaoqing::OnCbnSelchangeCombo1()
+ {
+	 // TODO: 在此添加控件通知处理程序代码
+
+	 if(test)
+	{
+		delete test;
+		test = NULL;
+	}
 	
-	TRACE("%d   %d\n",wher ,msec);
-	 
+	if(g_server_id != INVALID_HANDLE)
+	{
+		test = new net_video_test(g_server_id,m_combochanctrl.GetCurSel());
+		test->start_preview(GetDlgItem(IDC_VIDEO)->GetSafeHwnd(),0);
+		test->register_draw(draw_fun,(long)this);
+		/*
+		m_color_adjust_enable = FALSE;
+		m_bright.SetPos(0);
+		m_contrast.SetPos(0);
+		m_saturation.SetPos(0);
+		m_hue.SetPos(0);
+
+		int yuv_buf;
+		test->get_max_yuv_buf(yuv_buf);
+		m_cbo_yuv_buf.SetCurSel(yuv_buf - 1);
+
+		m_cbo_scale.SetCurSel(0);
+
+		UpdateData(FALSE);
+		*/
+		UpdateData(FALSE);
+	}
  }

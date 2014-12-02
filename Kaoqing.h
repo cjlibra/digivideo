@@ -54,4 +54,6 @@ public:
 	CEdit m_password;
 	afx_msg void OnClose();
 	afx_msg void OnBnClickedButton3();
+	CComboBox m_combochanctrl;
+	afx_msg void OnCbnSelchangeCombo1();
 };

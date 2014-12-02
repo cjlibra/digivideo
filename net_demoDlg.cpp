@@ -951,7 +951,7 @@ void Cnet_demoDlg::OnBnClickedBtconnect()
 		test = new net_video_test(g_server_id,m_slots.GetCurSel());
 		test->start_preview(GetDlgItem(IDC_VIDEO)->GetSafeHwnd(),m_cbo_connect_mode.GetCurSel());
 		test->register_draw(draw_fun,(long)this);
-
+		
 		m_color_adjust_enable = FALSE;
 		m_bright.SetPos(0);
 		m_contrast.SetPos(0);
@@ -963,7 +963,7 @@ void Cnet_demoDlg::OnBnClickedBtconnect()
 		m_cbo_yuv_buf.SetCurSel(yuv_buf - 1);
 
 		m_cbo_scale.SetCurSel(0);
-
+		
 		UpdateData(FALSE);
 	}
 }

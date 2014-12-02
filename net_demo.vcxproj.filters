@@ -111,6 +111,9 @@
     <ClCompile Include="DlgVcatch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="IphostDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="net_demo.rc">
@@ -233,6 +236,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DlgVcatch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IphostDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
