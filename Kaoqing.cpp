@@ -696,8 +696,8 @@ void CKaoqing::DrawImage(int x, int y, CDC *pDC)
 	
 	if(g_server_id != INVALID_HANDLE)
 	{
-		test = new net_video_test(g_server_id,m_combochanctrl.GetCurSel());
-		test->start_preview(GetDlgItem(IDC_VIDEO)->GetSafeHwnd(),0);
+		test = new net_video_test(g_server_id,this->m_combochanctrl.GetCurSel());
+		test->start_preview(GetDlgItem(IDC_VIDEO_KAOQING2)->GetSafeHwnd(),0);
 		test->register_draw(draw_fun,(long)this);
 		/*
 		m_color_adjust_enable = FALSE;
