@@ -204,9 +204,10 @@ static void CALLBACK call_fun(PLAY_HANDLE handle,HDC hDc,LONG nUser)
 
 static CString GetDatetimeFromFile(CString filename)
 {
-	int firstspace = filename.Find(" ",5);
+	int npos = filename.ReverseFind('+');
+	int firstspace = filename.Find(" ",npos+1);
 	int secondspace = filename.Find(" ",firstspace+1);
-	CString result = filename.Mid(5,secondspace-5);
+	CString result = filename.Mid(npos+1,secondspace-5);
 	return result;
 
 }

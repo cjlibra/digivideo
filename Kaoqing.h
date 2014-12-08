@@ -56,4 +56,8 @@ public:
 	afx_msg void OnBnClickedButton3();
 	CComboBox m_combochanctrl;
 	afx_msg void OnCbnSelchangeCombo1();
+	TCHAR chBuf[256];
+	
+	SYSTEMTIME stLocal;  
+    
 };

@@ -133,7 +133,7 @@ END_MESSAGE_MAP()
 void CKaoqing::OnBnClickedBtloginKaoqing()
 {
 	
-
+	this->m_combochanctrl.ResetContent();
 	UpdateData(FALSE);
 
 	if(g_server_id != INVALID_HANDLE)
@@ -156,6 +156,7 @@ void CKaoqing::OnBnClickedBtloginKaoqing()
 		//	m_slots.ResetContent();	
 			g_window_count = HW_NET_GetWindowCount(g_server_id);			
 			char str[255];
+			
 			for(int i = 0; i < g_window_count; i++)
 			{
 				sprintf(str,"通道%d",i + 1);
@@ -201,14 +202,11 @@ void CKaoqing::Connectvideo()
 		delete test;
 		test = NULL;
 	}
-	TCHAR chBuf[256];
 	
-	SYSTEMTIME stLocal;  
-    
 
 	if(g_server_id != INVALID_HANDLE)
 	{
-		test = new net_video_test(g_server_id,0);
+		test = new net_video_test(g_server_id,this->m_combochanctrl.GetCurSel());
 		test->start_preview(GetDlgItem(IDC_VIDEO_KAOQING2)->GetSafeHwnd(),0);//m_cbo_connect_mode.GetCurSel());
 		test->register_draw(draw_fun,(long)this);
 		test->enable_audio_preview(1);
@@ -218,7 +216,7 @@ void CKaoqing::Connectvideo()
                stLocal.wYear, stLocal.wMonth, stLocal.wDay,  
                stLocal.wHour, stLocal.wMinute, stLocal.wSecond,  
                stLocal.wMilliseconds,stLocal.wDayOfWeek);  
-	    sprintf(filemovie,"%s+%s.mp4","0001",chBuf);
+	    sprintf(filemovie,"%s+%d+%s.mp4",g_server_ip,this->m_combochanctrl.GetCurSel(),chBuf);
 		test->save_to_file(filemovie);
 
 		/*
@@ -699,6 +697,15 @@ void CKaoqing::DrawImage(int x, int y, CDC *pDC)
 		test = new net_video_test(g_server_id,this->m_combochanctrl.GetCurSel());
 		test->start_preview(GetDlgItem(IDC_VIDEO_KAOQING2)->GetSafeHwnd(),0);
 		test->register_draw(draw_fun,(long)this);
+		test->enable_audio_preview(1);
+		::GetLocalTime(&stLocal);  
+     //显示时间的间隔。  
+        wsprintf(chBuf,_T("%u-%u-%u %u-%u-%u %u %d"), 
+               stLocal.wYear, stLocal.wMonth, stLocal.wDay,  
+               stLocal.wHour, stLocal.wMinute, stLocal.wSecond,  
+               stLocal.wMilliseconds,stLocal.wDayOfWeek);  
+	    sprintf(filemovie,"%s+%d+%s.mp4",g_server_ip,this->m_combochanctrl.GetCurSel(),chBuf);
+		test->save_to_file(filemovie);
 		/*
 		m_color_adjust_enable = FALSE;
 		m_bright.SetPos(0);
