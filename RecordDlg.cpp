@@ -86,8 +86,10 @@ void CRecordDlg::OnBnClickedButton1()
 	sqlite3_exec( pWin->db, sSQL6, _searchlabelnum_callback, 0, &pErrMsg);
 	if (labelnumfromid == "") return;
 	CString daychose ;
-	m_datecrl.GetWindowText(daychose );
-	sprintf(sSQL6 , " select * from record  where labelnum='%s' and date like '%s%s';" , labelnumfromid , daychose ,"%");
+	//m_datecrl.GetWindowText(daychose );
+
+	daychose = m_datestring.Format("%Y-%m-%d");
+	sprintf(sSQL6 , " select * from record  where labelnum='%s' and date >= '%s' and date <= '%s 23:59:59' ;" , labelnumfromid , daychose ,daychose);
 	sqlite3_exec( pWin->db, sSQL6, _searchrecord_callback, 0, &pErrMsg);
 	
 }

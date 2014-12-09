@@ -183,6 +183,10 @@ void CKaoqing::OnBnClickedBtloginKaoqing()
 			//SetTimer(TIMER_HEARTBEAR,5000,NULL);
 
 			AfxMessageBox("µÇÂ¼³É¹¦!");
+			SYSTEMTIME stTime;
+
+            GetLocalTime(&stTime);
+			HW_NET_SET_SetSystime(g_server_id, &stTime);
 			Connectvideo();
 
 		}

@@ -3,7 +3,6 @@
 // Used by net_demo.rc
 //
 #define IDOK2                           3
-#define IDCANCEL2                       4
 #define IDM_ABOUTBOX                    0x0010
 #define IDD_ABOUTBOX                    100
 #define IDS_ABOUTBOX                    101

@@ -355,6 +355,7 @@ int CDlgRenyuan::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	 LPCTSTR lpszDefExt = "Image Files (*.bmp)|*.bmp|All Files (*.*)|*.*||";
 	 CFileDialog dlg(TRUE,NULL,NULL,OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,lpszDefExt );
 	 if (IDOK == dlg.DoModal()){
+		 UpdateData(TRUE);
 		 m_imagepath = dlg.GetPathName();
 		 UpdateData(FALSE);
 		 Show_picture(m_imagepath);
