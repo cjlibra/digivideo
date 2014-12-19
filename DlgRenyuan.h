@@ -49,4 +49,5 @@ public:
 	afx_msg void OnBnClickedButton7();
 	void RefreshDlg();
 	afx_msg void OnBnClickedButton9();
+	CString m_passstr;
 };

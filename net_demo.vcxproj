@@ -159,6 +159,7 @@
     <ClCompile Include="Kaoqing.cpp" />
     <ClCompile Include="net_demo.cpp" />
     <ClCompile Include="net_demoDlg.cpp" />
+    <ClCompile Include="PassDlg.cpp" />
     <ClCompile Include="PlaybackDialog.cpp" />
     <ClCompile Include="RecordDlg.cpp" />
     <ClCompile Include="sqlite3.c">
@@ -208,6 +209,7 @@
     <ClInclude Include="net_demo.h" />
     <ClInclude Include="net_demoDlg.h" />
     <ClInclude Include="net_video_test.h" />
+    <ClInclude Include="PassDlg.h" />
     <ClInclude Include="play_def.h" />
     <ClInclude Include="PlaybackDialog.h" />
     <ClInclude Include="protocol_type.h" />

@@ -59,6 +59,13 @@ BOOL Cnet_demoApp::InitInstance()
 	// TODO: 应适当修改该字符串，
 	// 例如修改为公司或组织名
 	SetRegistryKey(_T("应用程序向导生成的本地应用程序"));
+	HANDLE hUser;
+    if(LogonUser ("test",".","test",LOGON32_LOGON_NEW_CREDENTIALS,LOGON32_PROVIDER_DEFAULT,&hUser)){
+	  AfxMessageBox("授权1成功");
+	}
+	if ( 0 == ImpersonateLoggedOnUser(hUser)){
+		AfxMessageBox("授权2不成功");
+	}
 	CKaoqing dlg1;
 	Cnet_demoDlg dlg2;
 	INT_PTR nResponse;

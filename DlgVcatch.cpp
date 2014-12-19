@@ -9,6 +9,8 @@
 #include "Kaoqing.h"
 #include "net_video_test.h"
 
+#include "PassDlg.h"
+
 CDlgVcatch  *thisp;
 static int jj;
 static int idfromname;
@@ -37,6 +39,8 @@ CDlgVcatch::CDlgVcatch(CWnd* pParent /*=NULL*/)
 
 CDlgVcatch::~CDlgVcatch()
 {
+	 thisp->username="";
+	 thisp->password="";
 	 hwplay_stop(HANDLEL);
 }
 
@@ -120,6 +124,8 @@ static int _searchvideo_callback(void * notused, int argc, char ** argv, char **
 static int _searchren_callback(void * notused, int argc, char ** argv, char ** szColName)
 {
 	idfromname = atoi(argv[6]);
+	thisp->username = argv[1];
+	thisp->password = argv[7];
 	return 0;
 }
 
@@ -132,6 +138,12 @@ static int _searchlabelnum_callback(void * notused, int argc, char ** argv, char
 void CDlgVcatch::OnBnClickedButton2()
 {
 	// TODO: 在此添加控件通知处理程序代码
+	   CPassDlg dlg;
+	   if (password.Trim() != ""){
+		   dlg.password = password;
+		   if (IDCANCEL == dlg.DoModal()) return;
+
+	   }
 	    CString starttime ;
 	    CString endtime  ;
 	    CString filename ;

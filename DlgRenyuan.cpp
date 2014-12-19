@@ -32,6 +32,7 @@ CDlgRenyuan::CDlgRenyuan(CWnd* pParent /*=NULL*/)
 	, m_imagepath(_T(""))
 	, m_apartment(_T(""))
 	, m_labelinfo(_T(""))
+	, m_passstr(_T(""))
 {
 	
 }
@@ -55,6 +56,7 @@ void CDlgRenyuan::DoDataExchange(CDataExchange* pDX)
 	DDX_CBString(pDX, IDC_COMBO2, m_labelinfo);
 	DDX_Control(pDX, IDC_COMBO2, m_labelctl);
 	DDX_Control(pDX, IDC_STATIC_RENTOU, m_rentoupic);
+	DDX_Text(pDX, IDC_EDIT9, m_passstr);
 }
 
 
@@ -281,8 +283,8 @@ int CDlgRenyuan::OnCreate(LPCREATESTRUCT lpCreateStruct)
 			AfxMessageBox(sqlite3_errmsg(this->myparent->db));
 			return;
 	 }
-	 sprintf(sSQL2,"insert into person(name,sex,workcode,image,apartment,lableid) values('%s','%d','%s','%s','%s','%d') ;"   \
-		 ,m_renname,xingbie,m_workcode,m_imagepath,m_apartment,m_label_dbid);
+	 sprintf(sSQL2,"insert into person(name,sex,workcode,image,apartment,lableid,password) values('%s','%d','%s','%s','%s','%d','%s') ;"   \
+		 ,m_renname,xingbie,m_workcode,m_imagepath,m_apartment,m_label_dbid,m_passstr);
 	 ret = sqlite3_exec( this->myparent->db, sSQL2, 0, 0, &pErrMsg);
 	 if ( ret != SQLITE_OK ){
 			AfxMessageBox(sqlite3_errmsg(this->myparent->db));
@@ -452,7 +454,7 @@ void CDlgRenyuan::OnBnClickedButton7()
 			return;
 	    }
 		int personid = atoi(m_listren.GetItemText(nIndex,0));
-		sprintf(sSQL2,"update  person set name = '%s',sex='%s',workcode='%s' ,image='%s' ,apartment='%s',lableid=%d where id=%d ;",m_renname,m_rensex,m_workcode,m_imagepath, m_apartment,m_label_dbid ,personid );
+		sprintf(sSQL2,"update  person set name = '%s',sex='%s',workcode='%s' ,image='%s' ,apartment='%s',lableid=%d ,password='%s' where id=%d ;",m_renname,m_rensex,m_workcode,m_imagepath, m_apartment,m_label_dbid ,m_passstr ,personid );
 		ret = sqlite3_exec( this->myparent->db, sSQL2, 0, 0, &pErrMsg);
 		if ( ret != SQLITE_OK ){
 			AfxMessageBox(sqlite3_errmsg(this->myparent->db));

@@ -220,7 +220,7 @@ void CKaoqing::Connectvideo()
                stLocal.wYear, stLocal.wMonth, stLocal.wDay,  
                stLocal.wHour, stLocal.wMinute, stLocal.wSecond,  
                stLocal.wMilliseconds,stLocal.wDayOfWeek);  
-	    sprintf(filemovie,"%s+%d+%s.mp4",g_server_ip,this->m_combochanctrl.GetCurSel(),chBuf);
+	    sprintf(filemovie,"c:\\movie\\%s+%d+%s.mp4",g_server_ip,this->m_combochanctrl.GetCurSel(),chBuf);
 		test->save_to_file(filemovie);
 
 		/*
@@ -708,7 +708,7 @@ void CKaoqing::DrawImage(int x, int y, CDC *pDC)
                stLocal.wYear, stLocal.wMonth, stLocal.wDay,  
                stLocal.wHour, stLocal.wMinute, stLocal.wSecond,  
                stLocal.wMilliseconds,stLocal.wDayOfWeek);  
-	    sprintf(filemovie,"%s+%d+%s.mp4",g_server_ip,this->m_combochanctrl.GetCurSel(),chBuf);
+	    sprintf(filemovie,"c:\\movie\\%s+%d+%s.mp4",g_server_ip,this->m_combochanctrl.GetCurSel(),chBuf);
 		test->save_to_file(filemovie);
 		/*
 		m_color_adjust_enable = FALSE;
