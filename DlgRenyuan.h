@@ -1,5 +1,5 @@
 #pragma once
-#include "Kaoqing.h"
+#include "AMainDlg.h"
 #include "afxcmn.h"
 #include "afxwin.h"
 
@@ -26,7 +26,7 @@ public:
 	CString m_labelcomment;
 	CString m_onlycode;
 	afx_msg void OnBnClickedButton3();
-	CKaoqing *myparent;
+	CAMainDlg *myparent;
 	CListCtrl m_listlabel;
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnNMSetfocusList1(NMHDR *pNMHDR, LRESULT *pResult);
@@ -50,4 +50,5 @@ public:
 	void RefreshDlg();
 	afx_msg void OnBnClickedButton9();
 	CString m_passstr;
+	int flagtype;
 };

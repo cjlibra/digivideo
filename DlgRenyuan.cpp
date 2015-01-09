@@ -9,6 +9,8 @@
 #include "RecordDlg.h"
 #include "DlgVcatch.h"
 
+
+
 #include "sqlite3.h"
 
 static int _listshow_callback(void * notused, int argc, char ** argv, char ** szColName);
@@ -34,7 +36,7 @@ CDlgRenyuan::CDlgRenyuan(CWnd* pParent /*=NULL*/)
 	, m_labelinfo(_T(""))
 	, m_passstr(_T(""))
 {
-	
+	flagtype = 0;
 }
 
 CDlgRenyuan::~CDlgRenyuan()
@@ -83,7 +85,7 @@ BOOL CDlgRenyuan::OnInitDialog()
 	jj = 0;
 	j=0;
 	thisp =  this;
-	myparent =(CKaoqing *)GetParent();
+	myparent =(CAMainDlg *)GetParent();
 	DWORD dwStyle;
 	dwStyle =m_listlabel.GetStyle();
 	dwStyle |= LVS_EX_FULLROWSELECT| LVS_SHOWSELALWAYS;
@@ -145,7 +147,7 @@ void CDlgRenyuan::OnBnClickedButton3()
 	int ret = 1;
 	char  sSQL2[255] = " ";
 	UpdateData(TRUE);
-	myparent =(CKaoqing *)GetParent();
+	myparent =(CAMainDlg *)GetParent();
 	sprintf(sSQL2,"insert into label(comment,num) values('%s','%s');",m_labelcomment,m_onlycode);
 	ret = sqlite3_exec( this->myparent->db, sSQL2, 0, 0, &pErrMsg);
 	if ( ret != SQLITE_OK ){

@@ -774,9 +774,9 @@ BEGIN
 END
 
 IDD_RENYUAN_DLG DIALOGEX 0, 0, 834, 407
-STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "管理"
-FONT 8, "MS Shell Dlg", 400, 0, 0x1
+FONT 9, "宋体", 400, 0, 0x86
 BEGIN
     CONTROL         "",IDC_LIST1,"SysListView32",LVS_REPORT | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,25,28,256,204
     GROUPBOX        "人员信息",IDC_STATIC,311,14,503,380
@@ -1252,7 +1252,7 @@ BEGIN
         MENUITEM "视频检索",                        ID_Menu
         MENUITEM "图像检索",                        ID_32775
     END
-    MENUITEM "关于",                          0
+    MENUITEM "关于",                          ID_32781
 END
 
 

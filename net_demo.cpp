@@ -63,16 +63,16 @@ BOOL Cnet_demoApp::InitInstance()
 	SetRegistryKey(_T("应用程序向导生成的本地应用程序"));
 	HANDLE hUser;
     if(LogonUser ("test",".","test",LOGON32_LOGON_NEW_CREDENTIALS,LOGON32_PROVIDER_DEFAULT,&hUser)){
-	  AfxMessageBox("授权1成功");
+	 TRACE("授权1成功");
 	}
 	if ( 0 == ImpersonateLoggedOnUser(hUser)){
-		AfxMessageBox("授权2不成功");
+		TRACE("授权2不成功");
 	}
 	//CKaoqing dlg1;
 	CAMainDlg dlg1;
 	Cnet_demoDlg dlg2;
 	INT_PTR nResponse;
-	if (IDOK  == AfxMessageBox(_T("选择"),MB_OKCANCEL )){
+	if (1 || IDOK  == AfxMessageBox(_T("选择"),MB_OKCANCEL )){
 	 m_pMainWnd = &dlg1;
 	 nResponse = dlg1.DoModal();
 	}

@@ -2,7 +2,7 @@
 #include "afxcmn.h"
 
 #include "sqlite3.h"
-
+#include "net_video_test.h"
 
 // CAMainDlg ¶Ô»°¿ò
 
@@ -31,4 +31,17 @@ public:
 	
 	afx_msg void OnMenu();
 	afx_msg void On32775();
+	afx_msg void On32778();
+	static void  GetRfidPic(CString str);
+	static void CALLBACK draw_fun(PLAY_HANDLE handle,HDC hDc,LONG nUser);
+	SYSTEMTIME stLocal;  
+	TCHAR chBuf[256];
+
+	void InitViewItemInfo();
+	int SearchViewItemIdle();
+	afx_msg void On32780();
+	afx_msg void On32777();
+	afx_msg void On32771();
+	afx_msg void On32772();
+	afx_msg void On32781();
 };
