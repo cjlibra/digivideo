@@ -7,6 +7,8 @@
 #include "net_demoDlg.h"
 #include "Kaoqing.h"
 
+#include "AMainDlg.h"
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -66,7 +68,8 @@ BOOL Cnet_demoApp::InitInstance()
 	if ( 0 == ImpersonateLoggedOnUser(hUser)){
 		AfxMessageBox("授权2不成功");
 	}
-	CKaoqing dlg1;
+	//CKaoqing dlg1;
+	CAMainDlg dlg1;
 	Cnet_demoDlg dlg2;
 	INT_PTR nResponse;
 	if (IDOK  == AfxMessageBox(_T("选择"),MB_OKCANCEL )){

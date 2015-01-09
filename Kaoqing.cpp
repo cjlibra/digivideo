@@ -33,6 +33,12 @@ static PLAY_HANDLE HANDLEL;
 
 static void CALLBACK draw_fun(PLAY_HANDLE handle,HDC hDc,LONG nUser);
 static int _sql_callback(void * notused, int argc, char ** argv, char ** szColName);
+static void CALLBACK hw_stream_callback(PLAY_HANDLE handle,
+		INT64 stime,
+		int type,
+		char* buf,
+		int len,
+		long user);
 
 typedef struct _LABELINFO{
 	CString sLabel;
@@ -301,15 +307,45 @@ static void CALLBACK draw_fun(PLAY_HANDLE handle,HDC hDc,LONG nUser)
 
 	CDC::DeleteTempMap();
 }
+static void CALLBACK hw_stream_callback(PLAY_HANDLE handle,
+		INT64 stime,
+		int type,
+		char* buf,
+		int len,
+		long user)
+	{	
+		if(type == 8)
+		{			
+			//extra data	
+			extra_data_head* extra_head = (extra_data_head*)buf;
+			if(extra_head->type == 2)
+			{
+				//
+				//extra_data* e = (extra_data*)(buf + sizeof(extra_data_head));
+				//g_extra = *e;
 
+				char* rfid_data = buf + sizeof(extra_data_head);
+				int rfid_data_len = len - sizeof(extra_data_head);
+
+				TRACE(">>>>>>>>>>>>>>s>%d\n",rfid_data_len);
+
+				g_rfid_data.len = rfid_data_len;				
+				g_rfid_data.tm = time(NULL);
+				memcpy(g_rfid_data.buf,rfid_data,rfid_data_len);
+			}
+		}
+	}
 void CKaoqing::OnBnClickedButton1()
 {
 	// TODO: 在此添加控件通知处理程序代码
 
-	 HANDLEL = hwplay_open_local_file("zzzzz.mp4");
+	 HANDLEL = hwplay_open_local_file("c:\\movie\\bbb.mp4");
 
 	
-	 hwplay_play(HANDLEL, GetDlgItem(IDC_STATIC1)->GetSafeHwnd());
+	 //hwplay_play(HANDLEL, GetDlgItem(IDC_STATIC1)->GetSafeHwnd());
+	  hwplay_play(HANDLEL, NULL);
+
+	 hwplay_register_stream_callback(HANDLEL,hw_stream_callback,(long)this);
 
 	//hwplay_set_pos(HANDLEL ,2);
 	 hwplay_open_sound(HANDLEL);

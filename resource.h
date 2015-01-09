@@ -39,8 +39,9 @@
 #define IDD_DLG_RECORD                  157
 #define IDD_DLG_VCATCH                  158
 #define IDD_IPHOST_DLG                  159
-#define IDD_DIALOG1                     160
 #define IDD_PASS_DLG                    160
+#define IDD_A_MAINDLG                   161
+#define IDR_MENU1                       162
 #define IDC_VIDEO                       1000
 #define IDC_IPADDRESS1                  1001
 #define IDC_EDIT1                       1002
@@ -308,14 +309,32 @@
 #define IDC_STATIC_VIDEO                1201
 #define IDC_TREE1                       1202
 #define IDC_EDIT9                       1203
+#define IDC_STATIC2                     1204
+#define IDC_STATIC3                     1205
+#define IDC_STATIC4                     1206
+#define IDC_STATIC5                     1207
+#define IDC_STATIC6                     1208
+#define IDC_STATIC7                     1209
+#define IDC_STATIC8                     1210
+#define IDC_STATIC9                     1211
+#define ID_32771                        32771
+#define ID_32772                        32772
+#define ID_32773                        32773
+#define ID_Menu                         32774
+#define ID_32775                        32775
+#define ID_32776                        32776
+#define ID_32777                        32777
+#define ID_32778                        32778
+#define ID_32779                        32779
+#define ID_32780                        32780
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        161
-#define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1204
+#define _APS_NEXT_RESOURCE_VALUE        163
+#define _APS_NEXT_COMMAND_VALUE         32781
+#define _APS_NEXT_CONTROL_VALUE         1212
 #define _APS_NEXT_SYMED_VALUE           104
 #endif
 #endif

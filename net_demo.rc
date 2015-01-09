@@ -759,7 +759,7 @@ BEGIN
     EDITTEXT        IDC_VIDEO_KAOQING2,27,24,256,162,ES_AUTOHSCROLL
     CONTROL         "",IDC_IPADDRESS_KAOQING,"SysIPAddress32",WS_TABSTOP,29,207,132,16
     PUSHBUTTON      "注册",IDC_BTLOGIN_KAOQING,170,207,49,15,BS_CENTER
-    PUSHBUTTON      "测试",IDC_BUTTON1,29,238,50,14,NOT WS_VISIBLE
+    PUSHBUTTON      "测试",IDC_BUTTON1,29,238,50,14
     CONTROL         "",IDC_STATIC1,"Static",SS_BLACKFRAME,320,24,266,157
     LTEXT           "用户名：",IDC_STATIC,358,223,33,8
     LTEXT           "密码：",IDC_STATIC,358,251,25,8
@@ -843,9 +843,9 @@ BEGIN
 END
 
 IDD_IPHOST_DLG DIALOGEX 0, 0, 430, 257
-STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "摄像机群管理"
-FONT 8, "MS Shell Dlg", 400, 0, 0x1
+FONT 12, "宋体", 400, 0, 0x86
 BEGIN
     CONTROL         "",IDC_TREE1,"SysTreeView32",TVS_HASBUTTONS | TVS_HASLINES | TVS_LINESATROOT | TVS_SHOWSELALWAYS | WS_BORDER | WS_HSCROLL | WS_TABSTOP,44,39,157,174
     EDITTEXT        IDC_EDIT1,279,79,107,14,ES_AUTOHSCROLL
@@ -860,7 +860,7 @@ BEGIN
     PUSHBUTTON      "取消",IDC_BUTTON2,261,175,50,14
     PUSHBUTTON      "编辑",IDC_BUTTON3,317,175,50,14
     PUSHBUTTON      "删除",IDC_BUTTON4,370,175,50,14
-    PUSHBUTTON      "启动",IDC_BUTTON5,207,195,50,14
+    PUSHBUTTON      "启动",IDC_BUTTON5,207,195,50,14,NOT WS_VISIBLE
 END
 
 IDD_PASS_DLG DIALOGEX 0, 0, 257, 98
@@ -872,6 +872,25 @@ BEGIN
     PUSHBUTTON      "取消",IDCANCEL,136,56,50,14
     EDITTEXT        IDC_EDIT1,103,24,87,14,ES_AUTOHSCROLL
     LTEXT           "密码：",IDC_STATIC,61,26,25,8
+END
+
+IDD_A_MAINDLG DIALOGEX 0, 0, 317, 181
+STYLE DS_SETFONT | DS_MODALFRAME | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_POPUP | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_CLIENTEDGE
+CAPTION "视频融合动态识别系统"
+MENU IDR_MENU1
+FONT 12, "宋体", 400, 0, 0x86
+BEGIN
+    CONTROL         "",IDC_TREE1,"SysTreeView32",TVS_HASBUTTONS | TVS_HASLINES | TVS_NOHSCROLL | WS_BORDER | WS_TABSTOP,19,17,60,132
+    CONTROL         "",IDC_STATIC1,"Static",SS_BLACKFRAME,219,20,20,20
+    CONTROL         "",IDC_STATIC2,"Static",SS_BLACKFRAME,246,20,20,20
+    CONTROL         "",IDC_STATIC3,"Static",SS_BLACKFRAME,273,20,20,20
+    CONTROL         "",IDC_STATIC4,"Static",SS_BLACKFRAME,219,49,20,20
+    CONTROL         "",IDC_STATIC5,"Static",SS_BLACKFRAME,249,50,20,20
+    CONTROL         "",IDC_STATIC6,"Static",SS_BLACKFRAME,276,50,20,20
+    CONTROL         "",IDC_STATIC7,"Static",SS_BLACKFRAME,219,79,20,20
+    CONTROL         "",IDC_STATIC8,"Static",SS_BLACKFRAME,251,79,20,20
+    CONTROL         "",IDC_STATIC9,"Static",SS_BLACKFRAME,280,81,20,20
 END
 
 
@@ -1176,6 +1195,14 @@ BEGIN
         TOPMARGIN, 7
         BOTTOMMARGIN, 91
     END
+
+    IDD_A_MAINDLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 310
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 174
+    END
 END
 #endif    // APSTUDIO_INVOKED
 
@@ -1194,6 +1221,40 @@ IDR_HTML_PLAYBACKDIALOG HTML                    "PlaybackDialog.htm"
 
 IDB_MOTION_MASK         BITMAP                  "motion_mask.bmp"
 IDB_FOCUS_MASK          BITMAP                  "focus_mask.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MENU1 MENU
+BEGIN
+    POPUP "登陆"
+    BEGIN
+        MENUITEM "登陆",                          ID_32776
+    END
+    POPUP "操作"
+    BEGIN
+        MENUITEM "启动",                          ID_32778
+        MENUITEM "暂停",                          ID_32779
+        MENUITEM "停止",                          ID_32780
+    END
+    POPUP "配置"
+    BEGIN
+        MENUITEM "人员配置",                        ID_32771
+        MENUITEM "标签配置",                        ID_32772
+        MENUITEM "设备配置",                        ID_32773
+        MENUITEM SEPARATOR
+        MENUITEM "摄像机功能配置",                     ID_32777
+    END
+    POPUP "检索"
+    BEGIN
+        MENUITEM "视频检索",                        ID_Menu
+        MENUITEM "图像检索",                        ID_32775
+    END
+    MENUITEM "关于",                          0
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //

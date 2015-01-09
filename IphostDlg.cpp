@@ -7,7 +7,8 @@
 #include "afxdialogex.h"
 
 
-#include "Kaoqing.h"
+//#include "Kaoqing.h"
+#include "AMainDlg.h"
 
 // CIphostDlg 对话框
 static int _sql_select_callback(void * notused, int argc, char ** argv, char ** szColName);
@@ -82,8 +83,8 @@ void CIphostDlg::RefreshTree()
 	 hItem = this->m_iphosttreectrl.InsertItem("摄像机组",NULL,NULL,NULL);
 
 	 const char * sSQL4 = "select * from hosts";
-	  CKaoqing *p=(CKaoqing *)this->GetParent();
-	  char *pErrMsg = 0;
+	 CAMainDlg *p=( CAMainDlg *)this->GetParent();
+	 char *pErrMsg = 0;
 	 sqlite3_exec(p->db, sSQL4,_sql_select_callback, 0, &pErrMsg);
 
 	 this->m_iphosttreectrl.Expand(hItem,TVE_EXPAND);
@@ -106,7 +107,7 @@ void CIphostDlg::OnBnClickedButton1()
 
 	 }
 	 sprintf(sSQL4,sSQL3,iptxt,m_cameraid,m_cardreaderid,m_comments);
-	 CKaoqing *p=(CKaoqing *)this->GetParent();
+	 CAMainDlg *p=(CAMainDlg *)this->GetParent();
 
 	 char * pErrMsg = 0;
 	 int ret =1;
@@ -149,7 +150,7 @@ void CIphostDlg::OnNMClickTree1(NMHDR *pNMHDR, LRESULT *pResult)
 	const char * sSQL4 = "select * from hosts where ip = '%s';";
 	char sSQL5[255];
 	sprintf(sSQL5,sSQL4,str);
-	CKaoqing *p=(CKaoqing *)this->GetParent();
+	CAMainDlg *p=(CAMainDlg *)this->GetParent();
 	char *pErrMsg = 0;
     sqlite3_exec(p->db, sSQL5,_sql_select1_callback, 0, &pErrMsg);
 
@@ -178,7 +179,7 @@ void CIphostDlg::OnBnClickedButton3()
 	 CString iptxt;
 	 m_iphostctrl.GetWindowText(iptxt);
 	 sprintf(sSQL4,sSQL3,iptxt,m_cameraid,m_cardreaderid,m_comments,iptxt);
-	 CKaoqing *p=(CKaoqing *)this->GetParent();
+	 CAMainDlg *p=(CAMainDlg *)this->GetParent();
 
 	 char * pErrMsg = 0;
 	 int ret =1;
@@ -208,7 +209,7 @@ void CIphostDlg::OnBnClickedButton4()
 	 CString iptxt;
 	 m_iphostctrl.GetWindowText(iptxt);
 	 sprintf(sSQL4,sSQL3, iptxt);
-	 CKaoqing *p=(CKaoqing *)this->GetParent();
+	CAMainDlg *p=(CAMainDlg *)this->GetParent();
 
 	 char * pErrMsg = 0;
 	 int ret =1;
@@ -239,10 +240,10 @@ void CIphostDlg::OnBnClickedButton5()
 		AfxMessageBox("请选择ip");
 		return;
 	}
-	CKaoqing *p =(CKaoqing *)this->GetParent();
+	CAMainDlg *p =(CAMainDlg *)this->GetParent();
 	p->SetDlgItemText(IDC_IPADDRESS_KAOQING,tmp);
 	this->OnCancel();
-	p->OnBnClickedBtloginKaoqing();
+	//p->OnBnClickedBtloginKaoqing();
 
 	
 	 

@@ -43,6 +43,7 @@ protected:
 	afx_msg void OnBtnAlarmoutStop();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
+
 };
 
 //{{AFX_INSERT_LOCATION}}

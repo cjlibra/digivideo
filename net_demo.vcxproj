@@ -131,6 +131,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AlarmOut.cpp" />
+    <ClCompile Include="AMainDlg.cpp" />
     <ClCompile Include="DlgAlarm.cpp" />
     <ClCompile Include="DlgAnalyze.cpp" />
     <ClCompile Include="DlgChannelSet.cpp" />
@@ -178,6 +179,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AlarmOut.h" />
+    <ClInclude Include="AMainDlg.h" />
     <ClInclude Include="DlgAlarm.h" />
     <ClInclude Include="DlgAnalyze.h" />
     <ClInclude Include="DlgChannelSet.h" />

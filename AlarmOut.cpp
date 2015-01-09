@@ -38,6 +38,7 @@ BEGIN_MESSAGE_MAP(AlarmOut, CDialog)
 	ON_BN_CLICKED(IDC_BTN_ALARMOUT_START, OnBtnAlarmoutStart)
 	ON_BN_CLICKED(IDC_BTN_ALARMOUT_STOP, OnBtnAlarmoutStop)
 	//}}AFX_MSG_MAP
+	
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -86,3 +87,5 @@ void AlarmOut::close()
 {
 
 }
+
+

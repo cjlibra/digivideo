@@ -6,7 +6,7 @@
 #include "RecordDlg.h"
 #include "afxdialogex.h"
 
-#include "Kaoqing.h"
+#include  "AMainDlg.h"
 
 static int _searchren_callback(void * notused, int argc, char ** argv, char ** szColName);
 static int _searchlabelnum_callback(void * notused, int argc, char ** argv, char ** szColName);
@@ -76,7 +76,7 @@ void CRecordDlg::OnBnClickedButton1()
 	m_listrecord.DeleteAllItems();
 	idfromname = 0;
 	labelnumfromid = "";
-	CKaoqing *pWin = (CKaoqing *) this->GetParent()->GetParent();
+	CAMainDlg *pWin = (CAMainDlg *) this->GetParent();
 	char sSQL6[255] = " select * from person where name='%s';";
 	char * pErrMsg = 0;
 	sprintf(sSQL6," select * from person where name='%s';" ,m_nameren);

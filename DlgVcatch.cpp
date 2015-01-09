@@ -6,7 +6,7 @@
 #include "DlgVcatch.h"
 #include "afxdialogex.h"
 
-#include "Kaoqing.h"
+#include  "AMainDlg.h"
 #include "net_video_test.h"
 
 #include "PassDlg.h"
@@ -92,7 +92,7 @@ void CDlgVcatch::OnBnClickedButton1()
 	m_listvideo.DeleteAllItems();
 	idfromname = 0;
 	labelnumfromid = "";
-	CKaoqing *pWin = (CKaoqing *) this->GetParent()->GetParent();
+	CAMainDlg *pWin = (CAMainDlg *) this->GetParent();
 	char sSQL6[255] = " select * from person where name='%s';";
 	char * pErrMsg = 0;
 	sprintf(sSQL6," select * from person where name='%s';" ,m_name);

@@ -59,5 +59,6 @@ public:
 	TCHAR chBuf[256];
 	
 	SYSTEMTIME stLocal;  
+	
     
 };
