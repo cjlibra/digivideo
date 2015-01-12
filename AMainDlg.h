@@ -37,6 +37,7 @@ public:
 	SYSTEMTIME stLocal;  
 	TCHAR chBuf[256];
 
+	void SwitchView(int percount);
 	void InitViewItemInfo();
 	int SearchViewItemIdle();
 	afx_msg void On32780();
@@ -44,4 +45,8 @@ public:
 	afx_msg void On32771();
 	afx_msg void On32772();
 	afx_msg void On32781();
+	afx_msg void On32783();
+	afx_msg void On32784();
+	afx_msg void On32785();
+	afx_msg void On32786();
 };

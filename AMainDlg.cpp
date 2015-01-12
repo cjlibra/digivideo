@@ -80,6 +80,10 @@ BEGIN_MESSAGE_MAP(CAMainDlg, CDialogEx)
 	ON_COMMAND(ID_32771, &CAMainDlg::On32771)
 	ON_COMMAND(ID_32772, &CAMainDlg::On32772)
 	ON_COMMAND(ID_32781, &CAMainDlg::On32781)
+	ON_COMMAND(ID_32783, &CAMainDlg::On32783)
+	ON_COMMAND(ID_32784, &CAMainDlg::On32784)
+	ON_COMMAND(ID_32785, &CAMainDlg::On32785)
+	ON_COMMAND(ID_32786, &CAMainDlg::On32786)
 END_MESSAGE_MAP()
 
 
@@ -107,6 +111,257 @@ void CAMainDlg::RefreshTree()
 
 
 }
+void CAMainDlg::SwitchView(int percount)
+{
+	  CWnd * m_pviewItem1 = GetDlgItem(IDC_STATIC1);	  
+	  CWnd * m_pviewItem2 = GetDlgItem(IDC_STATIC2);
+	  CWnd * m_pviewItem3 = GetDlgItem(IDC_STATIC3);
+	  CWnd * m_pviewItem4 = GetDlgItem(IDC_STATIC4);
+	  CWnd * m_pviewItem5 = GetDlgItem(IDC_STATIC5);
+	  CWnd * m_pviewItem6 = GetDlgItem(IDC_STATIC6);
+	  CWnd * m_pviewItem7 = GetDlgItem(IDC_STATIC7);
+	  CWnd * m_pviewItem8 = GetDlgItem(IDC_STATIC8);
+	  CWnd * m_pviewItem9 = GetDlgItem(IDC_STATIC9);
+	  CWnd * m_pviewItem10 = GetDlgItem(IDC_STATIC10);
+	  CWnd * m_pviewItem11 = GetDlgItem(IDC_STATIC11);
+	  CWnd * m_pviewItem12 = GetDlgItem(IDC_STATIC12);
+	  CWnd * m_pviewItem13 = GetDlgItem(IDC_STATIC13);
+	  CWnd * m_pviewItem14 = GetDlgItem(IDC_STATIC14);
+	  CWnd * m_pviewItem15 = GetDlgItem(IDC_STATIC15);
+	  CWnd * m_pviewItem16 = GetDlgItem(IDC_STATIC16);
+	  m_pviewItem1->ShowWindow(0);
+	  m_pviewItem2->ShowWindow(0);
+	  m_pviewItem3->ShowWindow(0);
+	  m_pviewItem4->ShowWindow(0);
+	  m_pviewItem5->ShowWindow(0);
+	  m_pviewItem6->ShowWindow(0);
+	  m_pviewItem7->ShowWindow(0);
+	  m_pviewItem8->ShowWindow(0);
+	  m_pviewItem9->ShowWindow(0);
+	  m_pviewItem10->ShowWindow(0);
+	  m_pviewItem11->ShowWindow(0);
+	  m_pviewItem12->ShowWindow(0);
+	  m_pviewItem13->ShowWindow(0);
+	  m_pviewItem14->ShowWindow(0);
+	  m_pviewItem15->ShowWindow(0);
+	  m_pviewItem16->ShowWindow(0);
+
+	  RECT clRect;
+	  RECT treeRect;
+	  int viewitemheight;
+	  int  viewitemwidth;
+	  RECT viewRect;
+	  switch ( percount) {
+		case 1 :
+		 
+			GetClientRect(&clRect);
+		
+			treeRect.top = clRect.top+20;
+			treeRect.left = clRect.left+20;
+			treeRect.right = (clRect.right-clRect.left)/4+treeRect.left-100;
+			treeRect.bottom = clRect.bottom-20;
+			m_mainiptree.MoveWindow(&treeRect);		 
+		
+			viewitemheight = (clRect.bottom-clRect.top-20-20-5-5)/1;
+			viewitemwidth = (clRect.right-treeRect.right-20-20-5-5)/1;
+
+			viewRect.top = treeRect.top;
+			viewRect.left = treeRect.right+20;
+			viewRect.bottom = viewRect.top + viewitemheight;
+			viewRect.right = viewRect.left + viewitemwidth;
+			m_pviewItem1->MoveWindow(&viewRect);
+
+			m_pviewItem1->ShowWindow(1);
+		
+			break;
+		case 2 :
+			GetClientRect(&clRect);
+		 
+			treeRect.top = clRect.top+20;
+			treeRect.left = clRect.left+20;
+			treeRect.right = (clRect.right-clRect.left)/4+treeRect.left-100;
+			treeRect.bottom = clRect.bottom-20;
+			m_mainiptree.MoveWindow(&treeRect);
+
+			viewitemheight = (clRect.bottom-clRect.top-20-20-5)/2;
+			viewitemwidth = (clRect.right-treeRect.right-20-20-5)/2;
+
+			viewRect.top = treeRect.top;
+			viewRect.left = treeRect.right+20;
+			viewRect.bottom = viewRect.top + viewitemheight;
+			viewRect.right = viewRect.left + viewitemwidth;
+			m_pviewItem1->MoveWindow(&viewRect);
+			viewRect.left = viewRect.right+5;
+			viewRect.right = viewRect.left + viewitemwidth;
+			m_pviewItem2->MoveWindow(&viewRect);
+		
+			viewRect.top = treeRect.top+viewitemheight+5;
+			viewRect.left = treeRect.right+20;
+			viewRect.bottom = viewRect.top + viewitemheight;
+			viewRect.right = viewRect.left + viewitemwidth;
+			m_pviewItem3->MoveWindow(&viewRect);
+			viewRect.left = viewRect.right+5;
+			viewRect.right = viewRect.left + viewitemwidth;
+			m_pviewItem4->MoveWindow(&viewRect);
+
+			m_pviewItem1->ShowWindow(1);
+			m_pviewItem2->ShowWindow(1);
+			m_pviewItem3->ShowWindow(1);
+			m_pviewItem4->ShowWindow(1);
+		
+			break;
+		case 3 :
+		
+			GetClientRect(&clRect);
+		 
+			treeRect.top = clRect.top+20;
+			treeRect.left = clRect.left+20;
+			treeRect.right = (clRect.right-clRect.left)/4+treeRect.left-100;
+			treeRect.bottom = clRect.bottom-20;
+			m_mainiptree.MoveWindow(&treeRect);
+
+			viewitemheight = (clRect.bottom-clRect.top-20-20-5-5)/3;
+			viewitemwidth = (clRect.right-treeRect.right-20-20-5-5)/3;
+
+			viewRect.top = treeRect.top;
+			viewRect.left = treeRect.right+20;
+			viewRect.bottom = viewRect.top + viewitemheight;
+			viewRect.right = viewRect.left + viewitemwidth;
+			m_pviewItem1->MoveWindow(&viewRect);
+			viewRect.left = viewRect.right+5;
+			viewRect.right = viewRect.left + viewitemwidth;
+			m_pviewItem2->MoveWindow(&viewRect);
+			viewRect.left = viewRect.right+5;
+			viewRect.right = viewRect.left + viewitemwidth;
+			m_pviewItem3->MoveWindow(&viewRect);
+			viewRect.top = treeRect.top+viewitemheight+5;
+			viewRect.left = treeRect.right+20;
+			viewRect.bottom = viewRect.top + viewitemheight;
+			viewRect.right = viewRect.left + viewitemwidth;
+			m_pviewItem4->MoveWindow(&viewRect);
+			viewRect.left = viewRect.right+5;
+			viewRect.right = viewRect.left + viewitemwidth;
+			m_pviewItem5->MoveWindow(&viewRect);
+			viewRect.left = viewRect.right+5;
+			viewRect.right = viewRect.left + viewitemwidth;
+			m_pviewItem6->MoveWindow(&viewRect);
+			viewRect.top = treeRect.top+(viewitemheight+5)*2;
+			viewRect.left = treeRect.right+20;
+			viewRect.bottom = viewRect.top + viewitemheight;
+			viewRect.right = viewRect.left + viewitemwidth;
+			m_pviewItem7->MoveWindow(&viewRect);
+			viewRect.left = viewRect.right+5;
+			viewRect.right = viewRect.left + viewitemwidth;
+			m_pviewItem8->MoveWindow(&viewRect);
+			viewRect.left = viewRect.right+5;
+			viewRect.right = viewRect.left + viewitemwidth;
+			m_pviewItem9->MoveWindow(&viewRect);
+
+			m_pviewItem1->ShowWindow(1);
+			m_pviewItem2->ShowWindow(1);
+			m_pviewItem3->ShowWindow(1);
+			m_pviewItem4->ShowWindow(1);
+			m_pviewItem5->ShowWindow(1);
+			m_pviewItem6->ShowWindow(1);
+			m_pviewItem7->ShowWindow(1);
+			m_pviewItem8->ShowWindow(1);
+			m_pviewItem9->ShowWindow(1);
+			break;
+
+        case 4 :
+		
+			GetClientRect(&clRect);
+		 
+			treeRect.top = clRect.top+20;
+			treeRect.left = clRect.left+20;
+			treeRect.right = (clRect.right-clRect.left)/4+treeRect.left-100;
+			treeRect.bottom = clRect.bottom-20;
+			m_mainiptree.MoveWindow(&treeRect);
+
+			viewitemheight = (clRect.bottom-clRect.top-20-20-5-5-5)/4;
+			viewitemwidth = (clRect.right-treeRect.right-20-20-5-5-5)/4;
+
+			viewRect.top = treeRect.top;
+			viewRect.left = treeRect.right+20;
+			viewRect.bottom = viewRect.top + viewitemheight;
+			viewRect.right = viewRect.left + viewitemwidth;
+			m_pviewItem1->MoveWindow(&viewRect);
+			viewRect.left = viewRect.right+5;
+			viewRect.right = viewRect.left + viewitemwidth;
+			m_pviewItem2->MoveWindow(&viewRect);
+			viewRect.left = viewRect.right+5;
+			viewRect.right = viewRect.left + viewitemwidth;
+			m_pviewItem3->MoveWindow(&viewRect);
+			viewRect.left = viewRect.right+5;
+			viewRect.right = viewRect.left + viewitemwidth;
+			m_pviewItem4->MoveWindow(&viewRect);
+
+			viewRect.top = treeRect.top+viewitemheight+5;
+			viewRect.left = treeRect.right+20;
+			viewRect.bottom = viewRect.top + viewitemheight;
+			viewRect.right = viewRect.left + viewitemwidth;
+			m_pviewItem5->MoveWindow(&viewRect);
+			viewRect.left = viewRect.right+5;
+			viewRect.right = viewRect.left + viewitemwidth;
+			m_pviewItem6->MoveWindow(&viewRect);
+			viewRect.left = viewRect.right+5;
+			viewRect.right = viewRect.left + viewitemwidth;
+			m_pviewItem7->MoveWindow(&viewRect);
+			viewRect.left = viewRect.right+5;
+			viewRect.right = viewRect.left + viewitemwidth;
+			m_pviewItem8->MoveWindow(&viewRect);
+
+			viewRect.top = treeRect.top+(viewitemheight+5)*2;
+			viewRect.left = treeRect.right+20;
+			viewRect.bottom = viewRect.top + viewitemheight;
+			viewRect.right = viewRect.left + viewitemwidth;
+			m_pviewItem9->MoveWindow(&viewRect);
+			viewRect.left = viewRect.right+5;
+			viewRect.right = viewRect.left + viewitemwidth;
+			m_pviewItem10->MoveWindow(&viewRect);
+			viewRect.left = viewRect.right+5;
+			viewRect.right = viewRect.left + viewitemwidth;
+			m_pviewItem11->MoveWindow(&viewRect);
+			viewRect.left = viewRect.right+5;
+			viewRect.right = viewRect.left + viewitemwidth;
+			m_pviewItem12->MoveWindow(&viewRect);
+
+			viewRect.top = treeRect.top+(viewitemheight+5)*3;
+			viewRect.left = treeRect.right+20;
+			viewRect.bottom = viewRect.top + viewitemheight;
+			viewRect.right = viewRect.left + viewitemwidth;
+			m_pviewItem13->MoveWindow(&viewRect);
+			viewRect.left = viewRect.right+5;
+			viewRect.right = viewRect.left + viewitemwidth;
+			m_pviewItem14->MoveWindow(&viewRect);
+			viewRect.left = viewRect.right+5;
+			viewRect.right = viewRect.left + viewitemwidth;
+			m_pviewItem15->MoveWindow(&viewRect);
+			viewRect.left = viewRect.right+5;
+			viewRect.right = viewRect.left + viewitemwidth;
+			m_pviewItem16->MoveWindow(&viewRect);
+
+			m_pviewItem1->ShowWindow(1);
+			m_pviewItem2->ShowWindow(1);
+			m_pviewItem3->ShowWindow(1);
+			m_pviewItem4->ShowWindow(1);
+			m_pviewItem5->ShowWindow(1);
+			m_pviewItem6->ShowWindow(1);
+			m_pviewItem7->ShowWindow(1);
+			m_pviewItem8->ShowWindow(1);
+			m_pviewItem9->ShowWindow(1);
+			m_pviewItem10->ShowWindow(1);
+			m_pviewItem11->ShowWindow(1);
+			m_pviewItem12->ShowWindow(1);
+			m_pviewItem13->ShowWindow(1);
+			m_pviewItem14->ShowWindow(1);
+			m_pviewItem15->ShowWindow(1);
+			m_pviewItem16->ShowWindow(1);
+			break;
+		}
+
+
+}
 BOOL CAMainDlg::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
@@ -128,61 +383,7 @@ BOOL CAMainDlg::OnInitDialog()
     printf("数据库连接成功!\n");
 
 	ShowWindow(SW_MAXIMIZE);
-	RECT clRect;
-	GetClientRect(&clRect);
-	RECT treeRect;
-	treeRect.top = clRect.top+20;
-	treeRect.left = clRect.left+20;
-	treeRect.right = (clRect.right-clRect.left)/4+treeRect.left-100;
-	treeRect.bottom = clRect.bottom-20;
-	m_mainiptree.MoveWindow(&treeRect);
-	CWnd * m_pviewItem1 = GetDlgItem(IDC_STATIC1);
-	CWnd * m_pviewItem2 = GetDlgItem(IDC_STATIC2);
-	CWnd * m_pviewItem3 = GetDlgItem(IDC_STATIC3);
-	CWnd * m_pviewItem4 = GetDlgItem(IDC_STATIC4);
-	CWnd * m_pviewItem5 = GetDlgItem(IDC_STATIC5);
-	CWnd * m_pviewItem6 = GetDlgItem(IDC_STATIC6);
-	CWnd * m_pviewItem7 = GetDlgItem(IDC_STATIC7);
-	CWnd * m_pviewItem8 = GetDlgItem(IDC_STATIC8);
-	CWnd * m_pviewItem9 = GetDlgItem(IDC_STATIC9);
-
-	int viewitemheight = (clRect.bottom-clRect.top-20-20-5-5)/3;
-	int  viewitemwidth = (clRect.right-treeRect.right-20-20-5-5)/3;
-
-	RECT viewRect;
-	viewRect.top = treeRect.top;
-	viewRect.left = treeRect.right+20;
-	viewRect.bottom = viewRect.top + viewitemheight;
-	viewRect.right = viewRect.left + viewitemwidth;
-	m_pviewItem1->MoveWindow(&viewRect);
-	viewRect.left = viewRect.right+5;
-	viewRect.right = viewRect.left + viewitemwidth;
-	m_pviewItem2->MoveWindow(&viewRect);
-	viewRect.left = viewRect.right+5;
-	viewRect.right = viewRect.left + viewitemwidth;
-	m_pviewItem3->MoveWindow(&viewRect);
-	viewRect.top = treeRect.top+viewitemheight+5;
-	viewRect.left = treeRect.right+20;
-	viewRect.bottom = viewRect.top + viewitemheight;
-	viewRect.right = viewRect.left + viewitemwidth;
-	m_pviewItem4->MoveWindow(&viewRect);
-	viewRect.left = viewRect.right+5;
-	viewRect.right = viewRect.left + viewitemwidth;
-	m_pviewItem5->MoveWindow(&viewRect);
-	viewRect.left = viewRect.right+5;
-	viewRect.right = viewRect.left + viewitemwidth;
-	m_pviewItem6->MoveWindow(&viewRect);
-	viewRect.top = treeRect.top+(viewitemheight+5)*2;
-	viewRect.left = treeRect.right+20;
-	viewRect.bottom = viewRect.top + viewitemheight;
-	viewRect.right = viewRect.left + viewitemwidth;
-	m_pviewItem7->MoveWindow(&viewRect);
-	viewRect.left = viewRect.right+5;
-	viewRect.right = viewRect.left + viewitemwidth;
-	m_pviewItem8->MoveWindow(&viewRect);
-	viewRect.left = viewRect.right+5;
-	viewRect.right = viewRect.left + viewitemwidth;
-	m_pviewItem9->MoveWindow(&viewRect);
+	SwitchView(3);
 
 	RefreshTree(); //显示IPtree
 	InitViewItemInfo(); //显示框属性初始化
@@ -603,8 +804,32 @@ void CAMainDlg::On32772()  //标签配置
 }
 
 
-void CAMainDlg::On32781()
+void CAMainDlg::On32781() //关于
 {
 	 
 	MessageBox("Visual RFID是一种融合射频识别与视频采集技术的传感器,\n\n通过RFID技术对视频场景中的人、车、物进行快速精准识别，\n\nVisual RFID既是现有物联网技术的拓展，也是智能视频技术\n\n与RFID技术进行信息融合的一次尝试。","关于视频融合技术",  MB_OK);
+}
+
+
+void CAMainDlg::On32783() //1x1
+{
+	SwitchView(1);
+}
+
+
+void CAMainDlg::On32784()//2x2
+{
+	SwitchView(2);
+}
+
+
+void CAMainDlg::On32785()//3x3
+{
+	SwitchView(3);
+}
+
+
+void CAMainDlg::On32786()//4x4
+{
+	SwitchView(4);
 }

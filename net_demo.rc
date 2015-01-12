@@ -881,7 +881,7 @@ CAPTION "视频融合动态识别系统"
 MENU IDR_MENU1
 FONT 12, "宋体", 400, 0, 0x86
 BEGIN
-    CONTROL         "",IDC_TREE1,"SysTreeView32",TVS_HASBUTTONS | TVS_HASLINES | TVS_NOHSCROLL | WS_BORDER | WS_TABSTOP,19,17,60,132
+    CONTROL         "",IDC_TREE1,"SysTreeView32",TVS_HASBUTTONS | TVS_HASLINES | TVS_NOHSCROLL | WS_BORDER | WS_TABSTOP,50,15,60,132
     CONTROL         "",IDC_STATIC1,"Static",SS_BLACKFRAME,219,20,20,20
     CONTROL         "",IDC_STATIC2,"Static",SS_BLACKFRAME,246,20,20,20
     CONTROL         "",IDC_STATIC3,"Static",SS_BLACKFRAME,273,20,20,20
@@ -891,6 +891,13 @@ BEGIN
     CONTROL         "",IDC_STATIC7,"Static",SS_BLACKFRAME,219,79,20,20
     CONTROL         "",IDC_STATIC8,"Static",SS_BLACKFRAME,251,79,20,20
     CONTROL         "",IDC_STATIC9,"Static",SS_BLACKFRAME,280,81,20,20
+    CONTROL         "",IDC_STATIC10,"Static",SS_BLACKFRAME,218,103,20,20
+    CONTROL         "",IDC_STATIC11,"Static",SS_BLACKFRAME,252,103,20,20
+    CONTROL         "",IDC_STATIC12,"Static",SS_BLACKFRAME,278,107,20,19
+    CONTROL         "",IDC_STATIC13,"Static",SS_BLACKFRAME,217,129,20,20
+    CONTROL         "",IDC_STATIC14,"Static",SS_BLACKFRAME,250,131,20,20
+    CONTROL         "",IDC_STATIC15,"Static",SS_BLACKFRAME,276,133,20,20
+    CONTROL         "",IDC_STATIC16,"Static",SS_BLACKFRAME,216,147,20,20
 END
 
 
@@ -1246,6 +1253,13 @@ BEGIN
         MENUITEM "设备配置",                        ID_32773
         MENUITEM SEPARATOR
         MENUITEM "摄像机功能配置",                     ID_32777
+        POPUP "宫格显示"
+        BEGIN
+            MENUITEM "1x1",                         ID_32783
+            MENUITEM "2x2",                         ID_32784
+            MENUITEM "3x3",                         ID_32785
+            MENUITEM "4x4",                         ID_32786
+        END
     END
     POPUP "检索"
     BEGIN

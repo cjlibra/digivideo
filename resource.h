@@ -317,6 +317,13 @@
 #define IDC_STATIC7                     1209
 #define IDC_STATIC8                     1210
 #define IDC_STATIC9                     1211
+#define IDC_STATIC10                    1212
+#define IDC_STATIC11                    1213
+#define IDC_STATIC12                    1214
+#define IDC_STATIC13                    1215
+#define IDC_STATIC14                    1216
+#define IDC_STATIC15                    1217
+#define IDC_STATIC16                    1218
 #define ID_32771                        32771
 #define ID_32772                        32772
 #define ID_32773                        32773
@@ -328,13 +335,18 @@
 #define ID_32779                        32779
 #define ID_32780                        32780
 #define ID_32781                        32781
+#define ID_32782                        32782
+#define ID_32783                        32783
+#define ID_32784                        32784
+#define ID_32785                        32785
+#define ID_32786                        32786
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        163
-#define _APS_NEXT_COMMAND_VALUE         32782
+#define _APS_NEXT_COMMAND_VALUE         32787
 #define _APS_NEXT_CONTROL_VALUE         1212
 #define _APS_NEXT_SYMED_VALUE           104
 #endif
