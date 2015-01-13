@@ -17,7 +17,7 @@
 CAMainDlg *thisp;
 static   int g_window_count = 0;
 static  long g_server_version = 0;
-static net_video_test* test = NULL;
+static net_video_test* test[1024] = {NULL};
 static char filemovie[256];
 static UINT64 g_recved_len = 0;
 static UINT64 g_total_len = 0;
@@ -29,7 +29,7 @@ typedef struct _VIEWITEMINFO{
 	CWnd * pwin;
 
 }VIEWITEMINFO;
-static VIEWITEMINFO viewiteminfo[9];
+static VIEWITEMINFO viewiteminfo[16];
 
 typedef struct _LABELINFO{
 	CString sLabel;
@@ -50,16 +50,24 @@ CAMainDlg::CAMainDlg(CWnd* pParent /*=NULL*/)
 	: CDialogEx(CAMainDlg::IDD, pParent)
 {
 	thisp = this;
+	startvideocount = 0;
 }
 
 CAMainDlg::~CAMainDlg()
 {
 	sqlite3_close(db);
-	if(test)
-	{
-		test->stop_preview();
-		delete test;
-		test = NULL;
+	for (int i=0;i<startvideocount;i++){
+		if(   test[i]->is_preview())
+		{
+			test[i]->stop_preview();
+			 
+		}
+		if(test[i] )
+		{
+			 
+			delete test[i];
+			test[i] = NULL;
+		}
 	}
 }
 
@@ -389,7 +397,7 @@ BOOL CAMainDlg::OnInitDialog()
 	InitViewItemInfo(); //显示框属性初始化
 
 	HW_NET_Init(5198);	
-	HW_NET_SetUdpBasePort(8000);
+	//HW_NET_SetUdpBasePort(8000);
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// 异常: OCX 属性页应返回 FALSE
@@ -441,14 +449,14 @@ void CAMainDlg::On32778() //启动ip摄像机
 	}
 	 
 	USER_HANDLE g_server_id = INVALID_HANDLE; 
-	if(g_server_id != INVALID_HANDLE)
-	{
-		//KillTimer(TIMER_HEARTBEAR);
-		HW_NET_Logout(g_server_id);
-		g_server_id = INVALID_HANDLE;
-	}
+	//if(g_server_id != INVALID_HANDLE)
+	//{
+	//	//KillTimer(TIMER_HEARTBEAR);
+	//	HW_NET_Logout(g_server_id);
+	//	g_server_id = INVALID_HANDLE;
+	//}
 	char ip[255];
-	if(g_server_id == INVALID_HANDLE)
+	if(1||g_server_id == INVALID_HANDLE)
 	{
 		
 		sprintf(ip,"%s",tmp);
@@ -489,22 +497,23 @@ void CAMainDlg::On32778() //启动ip摄像机
 
             GetLocalTime(&stTime);
 			HW_NET_SET_SetSystime(g_server_id, &stTime);
-			if(test)
+			/*if(test)
 			{
 				delete test;
 				test = NULL;
-			}
+			}*/
 	        
 		 
 			if(g_server_id != INVALID_HANDLE)
 			{
-				test = new net_video_test(g_server_id,0);
+				test[startvideocount ] = new net_video_test(g_server_id,0);
 				viewiteminfo[whichviewitem].idle = 1;
 				viewiteminfo[whichviewitem].ip =  ip;
-				viewiteminfo[whichviewitem].ptest = test;
-				test->start_preview(viewiteminfo[whichviewitem].pwin->m_hWnd,0);//m_cbo_connect_mode.GetCurSel());
-				test->register_draw(draw_fun,(long)this);
-				test->enable_audio_preview(1);
+				viewiteminfo[whichviewitem].ptest = test[startvideocount ];
+				test[startvideocount ] ->start_preview(viewiteminfo[whichviewitem].pwin->m_hWnd,0);//m_cbo_connect_mode.GetCurSel());
+				
+				test[startvideocount ] ->register_draw(draw_fun,(long)test[startvideocount]);
+				test[startvideocount ] ->enable_audio_preview(1);
 				::GetLocalTime(&stLocal);  
 			    //显示时间的间隔。  
 				wsprintf(chBuf,_T("%u-%u-%u %u-%u-%u %u %d"), 
@@ -512,7 +521,8 @@ void CAMainDlg::On32778() //启动ip摄像机
 					   stLocal.wHour, stLocal.wMinute, stLocal.wSecond,  
 					   stLocal.wMilliseconds,stLocal.wDayOfWeek);  
 				sprintf(filemovie,"c:\\movie\\%s+%d+%s.mp4", ip,0,chBuf);
-				test->save_to_file(filemovie);
+				test[startvideocount]->save_to_file(filemovie);
+				startvideocount++;
 			}
 
 		}
@@ -523,19 +533,28 @@ void CAMainDlg::On32778() //启动ip摄像机
 	}
 }
 
-void CALLBACK CAMainDlg::draw_fun(PLAY_HANDLE handle,HDC hDc,LONG nUser)
+void CALLBACK CAMainDlg::draw_fun(PLAY_HANDLE handle,HDC hDc,LONG nUser )
 {
+	CAMainDlg* dlg = thisp;
+	net_video_test *ntest = (net_video_test*) nUser;
+	//CAMainDlg* dlg = (CAMainDlg*)nUser;
+
+	HDC hhDc = ::GetDC(ntest->window_handle());
+	//CDC* dc = CDC::FromHandle(hhdc);
+
+	CWnd* pWnd = CWnd::FromHandle(ntest->window_handle());
+	//CDC* dc = pWnd->GetDC();
 	CDC* dc = CDC::FromHandle(hDc);
 	dc->SetTextColor(RGB(255,0,0));		
 	dc->SetBkMode(TRANSPARENT);	
 
-	CAMainDlg* dlg = (CAMainDlg*)nUser;
-
+	
+	
 	
 #if 0
 #ifdef AUTO_ZOOM
 	RECT rt;
-	CWnd* pWnd = CWnd::FromHandle(test->window_handle());
+	CWnd* pWnd = CWnd::FromHandle(ntest->window_handle());
 	pWnd->GetClientRect(&rt);
 	dc->DrawText("在窗口中画框来启动点击放大",&rt,DT_SINGLELINE|DT_LEFT|DT_NOCLIP);
 
@@ -546,7 +565,7 @@ void CALLBACK CAMainDlg::draw_fun(PLAY_HANDLE handle,HDC hDc,LONG nUser)
 	dc->Rectangle(&rt);
 #else
 	RECT rt;
-	CWnd* pWnd = CWnd::FromHandle(test->window_handle());
+	CWnd* pWnd = CWnd::FromHandle(ntest->window_handle());
 	pWnd->GetClientRect(&rt);
 	dc->DrawText("鼠标左键启动图像缩放,右键关闭缩放，滚轮控制放大倍速,双击窗口/全屏切换!",&rt,DT_SINGLELINE|DT_LEFT|DT_NOCLIP);
 #endif
@@ -554,7 +573,7 @@ void CALLBACK CAMainDlg::draw_fun(PLAY_HANDLE handle,HDC hDc,LONG nUser)
 
 	//显示数据
 	RECT rt;
-	CWnd* pWnd = CWnd::FromHandle(test->window_handle());
+	
 	pWnd->GetClientRect(&rt);
 	if(g_recved_len > 0)
 	{
@@ -575,7 +594,7 @@ void CALLBACK CAMainDlg::draw_fun(PLAY_HANDLE handle,HDC hDc,LONG nUser)
 			str = str + " " + tmp;
 		}
 		dc->DrawText(str.GetBuffer(0),&rt,DT_BOTTOM | DT_LEFT);	
-		CAMainDlg::GetRfidPic(str);  // 产生rfid图像
+		CAMainDlg::GetRfidPic(str ,ntest);  // 产生rfid图像
 	}
 
 
@@ -585,8 +604,9 @@ void CALLBACK CAMainDlg::draw_fun(PLAY_HANDLE handle,HDC hDc,LONG nUser)
 
 
 
-void CAMainDlg::GetRfidPic(CString str)
+void CAMainDlg::GetRfidPic(CString str, void *pptest)
 {
+	net_video_test *ntest = (net_video_test*) pptest;
 	static char tmpuid[20];
 	
 	char filebmp[255];
@@ -617,7 +637,7 @@ void CAMainDlg::GetRfidPic(CString str)
                stLocal.wHour, stLocal.wMinute, stLocal.wSecond,  
                stLocal.wMilliseconds,stLocal.wDayOfWeek);  
 	sprintf(filebmp,"%s+%s.bmp",tmpuid,chBuf);
-	test->save_to_bmp(filebmp);
+	ntest->save_to_bmp(filebmp);
 //	thisp->Show_picture(filebmp);
 
 
@@ -729,7 +749,7 @@ int CAMainDlg::SearchViewItemIdle()
 void CAMainDlg::InitViewItemInfo()
 {
  
-	CWnd *p[9];
+	CWnd *p[16];
 	p[0] =  GetDlgItem(IDC_STATIC1);
 	p[1] =  GetDlgItem(IDC_STATIC2);
 	p[2] =  GetDlgItem(IDC_STATIC3);
@@ -739,7 +759,14 @@ void CAMainDlg::InitViewItemInfo()
 	p[6] =  GetDlgItem(IDC_STATIC7);
 	p[7] =  GetDlgItem(IDC_STATIC8);
 	p[8] =  GetDlgItem(IDC_STATIC9);
-	for (int i=0;i<9;i++){
+	p[9] =  GetDlgItem(IDC_STATIC10);
+	p[10] =  GetDlgItem(IDC_STATIC11);
+	p[11] =  GetDlgItem(IDC_STATIC12);
+	p[12] =  GetDlgItem(IDC_STATIC13);
+	p[13] =  GetDlgItem(IDC_STATIC14);
+	p[14] =  GetDlgItem(IDC_STATIC15);
+	p[15] =  GetDlgItem(IDC_STATIC16);
+	for (int i=0;i<16;i++){
 		viewiteminfo[i].idle  = 0;
 		viewiteminfo[i].ip = "";
 	    viewiteminfo[i].ptest = NULL;

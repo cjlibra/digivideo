@@ -32,10 +32,11 @@ public:
 	afx_msg void OnMenu();
 	afx_msg void On32775();
 	afx_msg void On32778();
-	static void  GetRfidPic(CString str);
+	static void  GetRfidPic(CString str,void *pptest);
 	static void CALLBACK draw_fun(PLAY_HANDLE handle,HDC hDc,LONG nUser);
 	SYSTEMTIME stLocal;  
 	TCHAR chBuf[256];
+	int startvideocount;
 
 	void SwitchView(int percount);
 	void InitViewItemInfo();
