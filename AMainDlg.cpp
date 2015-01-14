@@ -512,7 +512,7 @@ void CAMainDlg::On32778() //启动ip摄像机
 				viewiteminfo[whichviewitem].ptest = test[startvideocount ];
 				test[startvideocount ] ->start_preview(viewiteminfo[whichviewitem].pwin->m_hWnd,0);//m_cbo_connect_mode.GetCurSel());
 				
-				test[startvideocount ] ->register_draw(draw_fun,(long)test[startvideocount]);
+				test[startvideocount ] ->register_draw(draw_fun,(long)test[startvideocount ]);
 				test[startvideocount ] ->enable_audio_preview(1);
 				::GetLocalTime(&stLocal);  
 			    //显示时间的间隔。  
@@ -537,12 +537,14 @@ void CALLBACK CAMainDlg::draw_fun(PLAY_HANDLE handle,HDC hDc,LONG nUser )
 {
 	CAMainDlg* dlg = thisp;
 	net_video_test *ntest = (net_video_test*) nUser;
-	//CAMainDlg* dlg = (CAMainDlg*)nUser;
 
-	HDC hhDc = ::GetDC(ntest->window_handle());
+	//CAMainDlg* dlg = (CAMainDlg*)nUser;
+	//CWnd * dlg1 = (CWnd *) nUser;
+	//HDC hhDc = ::GetDC(dlg1->m_hWnd);
 	//CDC* dc = CDC::FromHandle(hhdc);
 
 	CWnd* pWnd = CWnd::FromHandle(ntest->window_handle());
+	//CWnd* pWnd  = dlg1;
 	//CDC* dc = pWnd->GetDC();
 	CDC* dc = CDC::FromHandle(hDc);
 	dc->SetTextColor(RGB(255,0,0));		
@@ -582,19 +584,22 @@ void CALLBACK CAMainDlg::draw_fun(PLAY_HANDLE handle,HDC hDc,LONG nUser )
 		dc->DrawText(str,&rt,DT_SINGLELINE|DT_BOTTOM|DT_NOCLIP);
 	}
 
-	if(g_rfid_data.len > 0
-		&& (time(NULL) - g_rfid_data.tm) < 3)
+	if(ntest->t_rfid_data.len > 0
+		&& (time(NULL) - ntest->t_rfid_data.tm) < 3)
 	{		
 		rt.top = rt.bottom - 20;
 		CString str;
-		for(int i = 0; i < g_rfid_data.len; i++)
+		for(int i = 0; i < ntest->t_rfid_data.len; i++)
 		{
 			CString tmp;
-			tmp.Format("%02x",g_rfid_data.buf[i]);
+			tmp.Format("%02x",ntest->t_rfid_data.buf[i]);
 			str = str + " " + tmp;
 		}
+		for (int i=0;i<10000;i++){
 		dc->DrawText(str.GetBuffer(0),&rt,DT_BOTTOM | DT_LEFT);	
-		CAMainDlg::GetRfidPic(str ,ntest);  // 产生rfid图像
+		}
+		TRACE("this is rfid is %s\n",str);
+//		CAMainDlg::GetRfidPic(str ,ntest);  // 产生rfid图像
 	}
 
 
@@ -733,7 +738,7 @@ void CAMainDlg::GetRfidPic(CString str, void *pptest)
 
 int CAMainDlg::SearchViewItemIdle()
 {
-	for (int i=0;i<9;i++){
+	for (int i=0;i<16;i++){
 		if (viewiteminfo[i].idle  == 0){
 			return i;
 

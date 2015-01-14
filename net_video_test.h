@@ -38,10 +38,13 @@ extern rfid_data_t g_rfid_data;
 class net_video_test
 {
 public:
+	rfid_data_t t_rfid_data;
+public:
 	net_video_test(USER_HANDLE handle,int slot)
 		:m_s_handle(INVALID_HANDLE),m_l_handle(handle),m_slot(slot)
 		,m_p_handle(INVALID_HANDLE),m_bsaveing(false),m_hfile(INVALID_HANDLE_VALUE)
 	{	
+		t_rfid_data.len  = 0;
 	}
 
 	~net_video_test()
@@ -574,6 +577,7 @@ private:
 		int len,
 		long user)
 	{	
+		net_video_test *ptest = (net_video_test*) user;
 		if(type == 8)
 		{			
 			//extra data	
@@ -592,6 +596,9 @@ private:
 				g_rfid_data.len = rfid_data_len;				
 				g_rfid_data.tm = time(NULL);
 				memcpy(g_rfid_data.buf,rfid_data,rfid_data_len);
+				ptest->t_rfid_data.len = rfid_data_len;				
+				ptest->t_rfid_data.tm = g_rfid_data.tm;
+				memcpy(ptest->t_rfid_data.buf,rfid_data,rfid_data_len);
 			}
 		}
 	}
