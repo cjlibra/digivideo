@@ -33,9 +33,11 @@ static VIEWITEMINFO viewiteminfo[16];
 
 typedef struct _LABELINFO{
 	CString sLabel;
+	CString ip;
     SYSTEMTIME timeLast;
 	int  labelleft;
 	int id;
+	
 
 }LABELINFO;
 static LABELINFO labelinfo[1024];
@@ -92,6 +94,7 @@ BEGIN_MESSAGE_MAP(CAMainDlg, CDialogEx)
 	ON_COMMAND(ID_32784, &CAMainDlg::On32784)
 	ON_COMMAND(ID_32785, &CAMainDlg::On32785)
 	ON_COMMAND(ID_32786, &CAMainDlg::On32786)
+	ON_WM_TIMER()
 END_MESSAGE_MAP()
 
 
@@ -373,6 +376,7 @@ void CAMainDlg::SwitchView(int percount)
 BOOL CAMainDlg::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
+	SetTimer(3,1000*10,NULL);
 
     CWinApp	 *pApp=AfxGetApp();
     HICON hIcon=pApp->LoadIcon(IDR_MAINFRAME);
@@ -510,6 +514,7 @@ void CAMainDlg::On32778() //启动ip摄像机
 				viewiteminfo[whichviewitem].idle = 1;
 				viewiteminfo[whichviewitem].ip =  ip;
 				viewiteminfo[whichviewitem].ptest = test[startvideocount ];
+				test[startvideocount ]->ip = ip;
 				test[startvideocount ] ->start_preview(viewiteminfo[whichviewitem].pwin->m_hWnd,0);//m_cbo_connect_mode.GetCurSel());
 				
 				test[startvideocount ] ->register_draw(draw_fun,(long)test[startvideocount ]);
@@ -595,11 +600,11 @@ void CALLBACK CAMainDlg::draw_fun(PLAY_HANDLE handle,HDC hDc,LONG nUser )
 			tmp.Format("%02x",ntest->t_rfid_data.buf[i]);
 			str = str + " " + tmp;
 		}
-		for (int i=0;i<10000;i++){
+		
 		dc->DrawText(str.GetBuffer(0),&rt,DT_BOTTOM | DT_LEFT);	
-		}
+		
 		TRACE("this is rfid is %s\n",str);
-//		CAMainDlg::GetRfidPic(str ,ntest);  // 产生rfid图像
+		CAMainDlg::GetRfidPic(str ,ntest);  // 产生rfid图像
 	}
 
 
@@ -618,19 +623,12 @@ void CAMainDlg::GetRfidPic(CString str, void *pptest)
    // CString filebmp;
 	//filebmp.Format(_T("%s.bmp"),str);one =
 	sprintf(filebmp,"%s.bmp",str.GetBuffer(0));
-	if (onlyone == 0){
-       memcpy(tmpuid,filebmp+25,18);
-	   onlyone = 1;
-	   thisp->SetTimer(2,8000,NULL);
-	}else{
-	   if (memcmp(tmpuid,filebmp+25,18) == 0){
-	      return;
-	   }else{
-	      memcpy(tmpuid,filebmp+25,18);
-	   }
+	 
+    memcpy(tmpuid,filebmp+25,18);
+	   
 	
 	
-	}
+	 
 	Beep( 750, 300 );
 	
 	TCHAR chBuf[256];
@@ -641,7 +639,7 @@ void CAMainDlg::GetRfidPic(CString str, void *pptest)
                stLocal.wYear, stLocal.wMonth, stLocal.wDay,  
                stLocal.wHour, stLocal.wMinute, stLocal.wSecond,  
                stLocal.wMilliseconds,stLocal.wDayOfWeek);  
-	sprintf(filebmp,"%s+%s.bmp",tmpuid,chBuf);
+	sprintf(filebmp,"%s+%s+%s.bmp",ntest->ip,tmpuid,chBuf);
 	ntest->save_to_bmp(filebmp);
 //	thisp->Show_picture(filebmp);
 
@@ -656,68 +654,72 @@ void CAMainDlg::GetRfidPic(CString str, void *pptest)
                
 	 int ret =1;
 	 char * pErrMsg = 0;
-	 char sSQL5[255]="insert into record(labelnum,date,pic) values('%s','%s','%s');";
-	 sprintf(sSQL5,"insert into record(labelnum,date,pic) values('%s','%s','%s');",labelnum,datetimestr,filebmp);
+	 char sSQL5[255]="insert into record(labelnum,date,pic,ip) values('%s','%s','%s','%s');";
+	 sprintf(sSQL5,"insert into record(labelnum,date,pic,ip) values('%s','%s','%s','%s');",labelnum,datetimestr,filebmp,ntest->ip);
 	 ret = sqlite3_exec( thisp->db, sSQL5, 0, 0, &pErrMsg);
-	 if ( ret != SQLITE_OK ){
-		//AfxMessageBox(sqlite3_errmsg(this->myparent->thisp->db));
-		printf(sqlite3_errmsg(thisp->db));
+	 if ( ret != SQLITE_OK ){		 
+		AfxMessageBox(sqlite3_errmsg(thisp->db));
 		return;
 	 }
-	 char sSQL6[255]="insert into vinfo(labelnum,starttime,endtime,filename,endflag) values('%s','%s','%s','%s',%d);";
+	 char sSQL6[255]="insert into vinfo(labelnum,starttime,endtime,filename,endflag,ip) values('%s','%s','%s','%s',%d,'%s');";
+	 int bingoindex = -1;
+	 static int sumcount = 0;
 	 for (int i=0;i<1024;i++){
-		   if (labelinfo[i].sLabel != labelnum){
-			   if (labelinfo[i].sLabel == ""){
-				   labelinfo[i].sLabel = labelnum;
-				   labelinfo[i].labelleft = 1;
-				   labelinfo[i].timeLast = stLocal;
-				   sprintf(sSQL6,"insert into vinfo(lablenum,starttime,filename,endflag) values('%s','%s','%s',%d);",labelnum,datetimestr,filemovie,0);
-				   ret = sqlite3_exec( thisp->db, sSQL6, 0, 0, &pErrMsg);				  
-	               if ( ret != SQLITE_OK ){
-		                //AfxMessageBox(sqlite3_errmsg(this->myparent->thisp->db));
-		                printf(sqlite3_errmsg(thisp->db));
-		                break;
-	               }
-				   labelinfo[i].id = sqlite3_last_insert_rowid( thisp->db);
-				   break;;
-			   }else{
-				   continue;
-			   }
-		   }
-		   if (TimeDiff(stLocal, labelinfo[i].timeLast)> 10*1000 ) {
-			   labelinfo[i].labelleft = 1;
-			   char datetimestr1[255];
-			   sprintf(datetimestr1,("%04u-%02u-%02u %02u:%02u:%02u"),  \
-                          labelinfo[i].timeLast.wYear, labelinfo[i].timeLast.wMonth, labelinfo[i].timeLast.wDay,   \
-                          labelinfo[i].timeLast.wHour, labelinfo[i].timeLast.wMinute, labelinfo[i].timeLast.wSecond) ;
-			   sprintf(sSQL6,"update vinfo set endtime = '%s',endflag= %d where id = %d ;",datetimestr1,1,labelinfo[i].id );
-			   ret = sqlite3_exec( thisp->db, sSQL6, 0, 0, &pErrMsg);
-	           if ( ret != SQLITE_OK ){
-		            //AfxMessageBox(sqlite3_errmsg(this->myparent->thisp->db));
-		            printf(sqlite3_errmsg(thisp->db));
-		            break;
-	           }
-			   labelinfo[i].timeLast = stLocal;
-			   sprintf(sSQL6,"insert into vinfo(lablenum,starttime,filename,endflag) values('%s','%s','%s',%d);",labelnum,datetimestr,filemovie,0);
-			   ret = sqlite3_exec( thisp->db, sSQL6, 0, 0, &pErrMsg);
-	           if ( ret != SQLITE_OK ){
-		            //AfxMessageBox(sqlite3_errmsg(this->myparent->thisp->db));
-		            printf(sqlite3_errmsg(thisp->db));
-		            break;
-	           }
-			   labelinfo[i].id = sqlite3_last_insert_rowid( thisp->db);
+		   if (labelinfo[i].sLabel == labelnum){
+			   bingoindex = i;
 			   break;
-
-		   }else{
-		  
-			   labelinfo[i].labelleft++;
-			   labelinfo[i].timeLast = stLocal;
-			   break;
-		  
 		   }
-
-
+		   continue;
 	 }
+	 if (   bingoindex == -1){  //数据列表中没有找到rfid，说明是新的
+			labelinfo[sumcount].sLabel = labelnum;
+			labelinfo[sumcount].labelleft = 1;
+			labelinfo[sumcount].timeLast = stLocal;
+			labelinfo[sumcount].ip  = ntest->ip;
+			sprintf(sSQL6,"insert into vinfo(lablenum,starttime,filename,endflag,ip) values('%s','%s','%s',%d,'%s');",labelnum,datetimestr,filemovie,0,ntest->ip);
+			ret = sqlite3_exec( thisp->db, sSQL6, 0, 0, &pErrMsg);				  
+			if ( ret != SQLITE_OK ){				 
+				AfxMessageBox(sqlite3_errmsg(thisp->db));
+				return;
+			}
+			labelinfo[sumcount].id = sqlite3_last_insert_rowid( thisp->db);
+			sumcount++ ;
+			return;
+	 }		 
+		   
+	if (TimeDiff(stLocal, labelinfo[bingoindex].timeLast)> 10*1000 ||  labelinfo[bingoindex].ip != ntest->ip) {
+		labelinfo[bingoindex].labelleft = 1;
+		char datetimestr1[255];
+		sprintf(datetimestr1,("%04u-%02u-%02u %02u:%02u:%02u"),  \
+                    labelinfo[bingoindex].timeLast.wYear, labelinfo[bingoindex].timeLast.wMonth, labelinfo[bingoindex].timeLast.wDay,   \
+                    labelinfo[bingoindex].timeLast.wHour, labelinfo[bingoindex].timeLast.wMinute, labelinfo[bingoindex].timeLast.wSecond) ;
+		sprintf(sSQL6,"update vinfo set endtime = '%s',endflag= %d where id = %d ;",datetimestr1,1,labelinfo[bingoindex].id );
+		ret = sqlite3_exec( thisp->db, sSQL6, 0, 0, &pErrMsg);
+	    if ( ret != SQLITE_OK ){		    
+		    AfxMessageBox(sqlite3_errmsg(thisp->db));
+		    return;
+	    }
+		labelinfo[bingoindex].timeLast = stLocal;
+		sprintf(sSQL6,"insert into vinfo(lablenum,starttime,filename,endflag,ip) values('%s','%s','%s',%d,'%s');",labelnum,datetimestr,filemovie,0,ntest->ip);
+		ret = sqlite3_exec( thisp->db, sSQL6, 0, 0, &pErrMsg);
+	    if ( ret != SQLITE_OK ){		    
+		    AfxMessageBox(sqlite3_errmsg(thisp->db));
+		    return;
+	    }
+		labelinfo[bingoindex].id = sqlite3_last_insert_rowid( thisp->db);
+		labelinfo[bingoindex].ip = ntest->ip;
+		return;
+
+	}else{
+		  
+		labelinfo[bingoindex].labelleft++;
+		labelinfo[bingoindex].timeLast = stLocal;
+		return;
+		  
+	}
+
+
+	 
 	
 	
 
@@ -864,4 +866,37 @@ void CAMainDlg::On32785()//3x3
 void CAMainDlg::On32786()//4x4
 {
 	SwitchView(4);
+}
+
+
+void CAMainDlg::OnTimer(UINT_PTR nIDEvent)
+{
+	SYSTEMTIME stLocal;  
+     ::GetLocalTime(&stLocal);  
+	 if (nIDEvent == 3){
+		 for (int i=0;i<1024;i++){			
+			 if (labelinfo[i].labelleft == 0){
+				 continue;
+			 }
+
+			if ( TimeDiff(stLocal,labelinfo[i].timeLast) > 10*1000){
+				char datetimestr1[255];
+				char sSQL6[255];
+				int ret =1;
+				char * pErrMsg = 0;
+				sprintf(datetimestr1,("%04u-%02u-%02u %02u:%02u:%02u"),  \
+							  labelinfo[i].timeLast.wYear, labelinfo[i].timeLast.wMonth, labelinfo[i].timeLast.wDay,   \
+							  labelinfo[i].timeLast.wHour, labelinfo[i].timeLast.wMinute, labelinfo[i].timeLast.wSecond) ;
+				sprintf(sSQL6,"update vinfo set endtime = '%s',endflag= %d where id = %d ;",datetimestr1,1,labelinfo[i].id );
+				ret = sqlite3_exec( thisp->db, sSQL6, 0, 0, &pErrMsg);
+				if ( ret != SQLITE_OK ){
+					  printf(sqlite3_errmsg(thisp->db));
+					  break;
+				}
+				labelinfo[i].labelleft = 0;
+			}
+		 }
+	 }
+
+	CDialogEx::OnTimer(nIDEvent);
 }

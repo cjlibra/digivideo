@@ -39,6 +39,7 @@ class net_video_test
 {
 public:
 	rfid_data_t t_rfid_data;
+	CString  ip;
 public:
 	net_video_test(USER_HANDLE handle,int slot)
 		:m_s_handle(INVALID_HANDLE),m_l_handle(handle),m_slot(slot)
