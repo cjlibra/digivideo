@@ -12,7 +12,7 @@
 
 #include "net_demoDlg.h"
 #include "DlgRenyuan.h"
-
+#include "ExcelOutDlg.h"
 
 CAMainDlg *thisp;
 static   int g_window_count = 0;
@@ -95,6 +95,7 @@ BEGIN_MESSAGE_MAP(CAMainDlg, CDialogEx)
 	ON_COMMAND(ID_32785, &CAMainDlg::On32785)
 	ON_COMMAND(ID_32786, &CAMainDlg::On32786)
 	ON_WM_TIMER()
+	ON_COMMAND(ID_32787, &CAMainDlg::On32787)
 END_MESSAGE_MAP()
 
 
@@ -891,7 +892,7 @@ void CAMainDlg::OnTimer(UINT_PTR nIDEvent)
 				ret = sqlite3_exec( thisp->db, sSQL6, 0, 0, &pErrMsg);
 				if ( ret != SQLITE_OK ){
 					  printf(sqlite3_errmsg(thisp->db));
-					  break;
+					  continue;
 				}
 				labelinfo[i].labelleft = 0;
 			}
@@ -899,4 +900,11 @@ void CAMainDlg::OnTimer(UINT_PTR nIDEvent)
 	 }
 
 	CDialogEx::OnTimer(nIDEvent);
+}
+
+
+void CAMainDlg::On32787() //考勤数据导出为excel
+{
+	CExcelOutDlg dlg;
+	dlg.DoModal();
 }

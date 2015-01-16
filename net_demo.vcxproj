@@ -157,6 +157,7 @@
     <ClCompile Include="DlgVcatch.cpp" />
     <ClCompile Include="DlgVlost.cpp" />
     <ClCompile Include="DlgWorkSheet.cpp" />
+    <ClCompile Include="ExcelOutDlg.cpp" />
     <ClCompile Include="IphostDlg.cpp" />
     <ClCompile Include="Kaoqing.cpp" />
     <ClCompile Include="net_demo.cpp" />
@@ -205,6 +206,7 @@
     <ClInclude Include="DlgVcatch.h" />
     <ClInclude Include="DlgVlost.h" />
     <ClInclude Include="DlgWorkSheet.h" />
+    <ClInclude Include="ExcelOutDlg.h" />
     <ClInclude Include="howellnetsdk.h" />
     <ClInclude Include="HwNetSdk.h" />
     <ClInclude Include="IphostDlg.h" />

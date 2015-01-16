@@ -900,6 +900,16 @@ BEGIN
     CONTROL         "",IDC_STATIC16,"Static",SS_BLACKFRAME,216,147,20,20
 END
 
+IDD_A_EXCELOUT_DLG DIALOGEX 0, 0, 316, 180
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "输出表单"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "确定",IDOK,100,95,50,14
+    PUSHBUTTON      "取消",IDCANCEL,159,94,50,14
+    CONTROL         "",IDC_DATETIMEPICKER1,"SysDateTimePick32",DTS_RIGHTALIGN | DTS_LONGDATEFORMAT | WS_TABSTOP,107,57,100,15
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -1210,6 +1220,14 @@ BEGIN
         TOPMARGIN, 7
         BOTTOMMARGIN, 174
     END
+
+    IDD_A_EXCELOUT_DLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 309
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 173
+    END
 END
 #endif    // APSTUDIO_INVOKED
 
@@ -1265,6 +1283,8 @@ BEGIN
     BEGIN
         MENUITEM "视频检索",                        ID_Menu
         MENUITEM "图像检索",                        ID_32775
+        MENUITEM SEPARATOR
+        MENUITEM "考勤导出",                        ID_32787
     END
     MENUITEM "关于",                          ID_32781
 END
