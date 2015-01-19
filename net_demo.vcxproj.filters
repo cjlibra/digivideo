@@ -273,7 +273,9 @@
     <CustomBuild Include="res\net_demo.rc2">
       <Filter>Resource Files</Filter>
     </CustomBuild>
-    <CustomBuild Include="PlaybackDialog.htm" />
     <CustomBuild Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="PlaybackDialog.htm" />
   </ItemGroup>
 </Project>

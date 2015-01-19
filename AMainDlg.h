@@ -52,4 +52,13 @@ public:
 	afx_msg void On32786();
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	afx_msg void On32787();
+	void  OutInitFile();
+	afx_msg void OnNMRClickTree1(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void On32792();
+	afx_msg void On32793();
+	afx_msg void On32794();
+	afx_msg void On32795();
+	afx_msg void On32788();
+	afx_msg void On32789();
+	afx_msg void On32790();
 };

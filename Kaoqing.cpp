@@ -226,7 +226,7 @@ void CKaoqing::Connectvideo()
                stLocal.wYear, stLocal.wMonth, stLocal.wDay,  
                stLocal.wHour, stLocal.wMinute, stLocal.wSecond,  
                stLocal.wMilliseconds,stLocal.wDayOfWeek);  
-	    sprintf(filemovie,"c:\\movie\\%s+%d+%s.mp4",g_server_ip,this->m_combochanctrl.GetCurSel(),chBuf);
+	    sprintf(filemovie,"movie\\%s+%d+%s.mp4",g_server_ip,this->m_combochanctrl.GetCurSel(),chBuf);
 		test->save_to_file(filemovie);
 
 		/*
@@ -339,7 +339,7 @@ void CKaoqing::OnBnClickedButton1()
 {
 	// TODO: 在此添加控件通知处理程序代码
 
-	 HANDLEL = hwplay_open_local_file("c:\\movie\\bbb.mp4");
+	 HANDLEL = hwplay_open_local_file("movie\\bbb.mp4");
 
 	
 	 //hwplay_play(HANDLEL, GetDlgItem(IDC_STATIC1)->GetSafeHwnd());
@@ -744,7 +744,7 @@ void CKaoqing::DrawImage(int x, int y, CDC *pDC)
                stLocal.wYear, stLocal.wMonth, stLocal.wDay,  
                stLocal.wHour, stLocal.wMinute, stLocal.wSecond,  
                stLocal.wMilliseconds,stLocal.wDayOfWeek);  
-	    sprintf(filemovie,"c:\\movie\\%s+%d+%s.mp4",g_server_ip,this->m_combochanctrl.GetCurSel(),chBuf);
+	    sprintf(filemovie,"movie\\%s+%d+%s.mp4",g_server_ip,this->m_combochanctrl.GetCurSel(),chBuf);
 		test->save_to_file(filemovie);
 		/*
 		m_color_adjust_enable = FALSE;

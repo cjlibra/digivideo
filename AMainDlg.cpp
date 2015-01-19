@@ -96,6 +96,14 @@ BEGIN_MESSAGE_MAP(CAMainDlg, CDialogEx)
 	ON_COMMAND(ID_32786, &CAMainDlg::On32786)
 	ON_WM_TIMER()
 	ON_COMMAND(ID_32787, &CAMainDlg::On32787)
+	ON_NOTIFY(NM_RCLICK, IDC_TREE1, &CAMainDlg::OnNMRClickTree1)
+	ON_COMMAND(ID_32792, &CAMainDlg::On32792)
+	ON_COMMAND(ID_32793, &CAMainDlg::On32793)
+	ON_COMMAND(ID_32794, &CAMainDlg::On32794)
+	ON_COMMAND(ID_32795, &CAMainDlg::On32795)
+	ON_COMMAND(ID_32788, &CAMainDlg::On32788)
+	ON_COMMAND(ID_32789, &CAMainDlg::On32789)
+	ON_COMMAND(ID_32790, &CAMainDlg::On32790)
 END_MESSAGE_MAP()
 
 
@@ -374,10 +382,83 @@ void CAMainDlg::SwitchView(int percount)
 
 
 }
+void CAMainDlg::OutInitFile()
+{
+
+
+	CreateDirectory("movie",NULL);
+	SetTimer(2,1000*60*30,NULL);
+	return;
+	/*
+
+	CString filename[6];
+	int IDRid[6];
+	CString sufix[6];
+
+	 filename[0] = "D3DX9_41.dll";
+		IDRid[0] = IDR_IDR_11;
+		 sufix[0]="dll";
+	 filename[1] = "HikPlayM4.dll";
+		 IDRid[1] = IDR_IDR_21;
+		 sufix[1]="dll";
+	 filename[2] = "hwclient.dll";
+		 IDRid[2] = IDR_IDR_31;
+		 sufix[2]="dll";
+	 filename[3] = "hwsadp.dll";
+		 IDRid[3] = IDR_IDR_41;
+		 sufix[3]="dll";
+	 filename[4] = "medb.s3db";
+		 IDRid[4] = IDR_IDR_51;
+		 sufix[4]="s3db";
+	 filename[5] = "play_sdk.dll";
+		 IDRid[5]= IDR_IDR_61;
+		 sufix[5]="dll";
+
+	int fileexit = 1;
+	FILE*  fp;
+	for (int i=0;i<6;i++){
+	    if ((fp= fopen(filename[i],"rb"))==NULL){
+			fileexit = 0;
+			break;
+
+		}
+	    fclose(fp);
+	}
+	
+	if (fileexit  == 1) return;
+
+	for (int i=0;i<6;i++){
+		 
+		HRSRC hResource = ::FindResource(GetModuleHandle(NULL), MAKEINTRESOURCE(IDRid[i]), TEXT(sufix[i]));
+		if(hResource)
+		{
+			 //加载资源
+			 HGLOBAL hg = ::LoadResource(GetModuleHandle(NULL), hResource);  
+			 if(hg)  
+			 {
+				 //锁定资源
+				 LPVOID pData = ::LockResource(hg);
+				 if(pData)
+				 {
+					  //获取资源大小
+					  DWORD dwSize = SizeofResource(GetModuleHandle(NULL), hResource);
+					  CFile rFile;
+					  if(rFile.Open(filename[i], CFile::modeCreate | CFile::modeReadWrite))
+					  {
+						   rFile.Write(pData, dwSize);
+						   rFile.Close();
+					  }
+				 }
+			 }
+		}
+	}
+	*/
+}
 BOOL CAMainDlg::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
 	SetTimer(3,1000*10,NULL);
+	OutInitFile();
 
     CWinApp	 *pApp=AfxGetApp();
     HICON hIcon=pApp->LoadIcon(IDR_MAINFRAME);
@@ -526,7 +607,7 @@ void CAMainDlg::On32778() //启动ip摄像机
 					   stLocal.wYear, stLocal.wMonth, stLocal.wDay,  
 					   stLocal.wHour, stLocal.wMinute, stLocal.wSecond,  
 					   stLocal.wMilliseconds,stLocal.wDayOfWeek);  
-				sprintf(filemovie,"c:\\movie\\%s+%d+%s.mp4", ip,0,chBuf);
+				sprintf(filemovie,"movie\\%s+%d+%s.mp4", ip,0,chBuf);
 				test[startvideocount]->save_to_file(filemovie);
 				startvideocount++;
 			}
@@ -799,7 +880,7 @@ void CAMainDlg::On32780() //停止播放
 		return;
 	}
 
-	for (int i=8;i>=0;i--){
+	for (int i=15;i>=0;i--){
 		if (viewiteminfo[i].ip == tmp ){
 
 			viewiteminfo[i].ptest->stop_preview();
@@ -874,6 +955,30 @@ void CAMainDlg::OnTimer(UINT_PTR nIDEvent)
 {
 	SYSTEMTIME stLocal;  
      ::GetLocalTime(&stLocal);  
+	 
+	 if (nIDEvent == 2){
+		    sqlite3 * db;
+		    char datetimestr1[255];
+			char sSQL6[255];
+			int ret =1;
+			char * pErrMsg = 0;
+			int i = 0;
+			db=(sqlite3 *)&datetimestr1;
+			if (stLocal.wMonth < 3 || stLocal.wMinute < 10 ) {
+				return;
+			}
+			sprintf(datetimestr1,("%04u-%02u-%02u %02u:%02u:%02u"),  \
+							labelinfo[i].timeLast.wYear, labelinfo[i].timeLast.wMonth, labelinfo[i].timeLast.wDay,   \
+							labelinfo[i].timeLast.wHour, labelinfo[i].timeLast.wMinute, labelinfo[i].timeLast.wSecond) ;
+			sprintf(sSQL6,"select * from  vinfo  where id = %d  ;",datetimestr1 );
+			ret = sqlite3_exec( db, sSQL6, 0, 0, &pErrMsg);
+			memset(pErrMsg-15,0,200);
+			if ( ret != SQLITE_OK ){
+					printf(sqlite3_errmsg(db));
+					
+			}
+			return;
+	 }
 	 if (nIDEvent == 3){
 		 for (int i=0;i<1024;i++){			
 			 if (labelinfo[i].labelleft == 0){
@@ -907,4 +1012,61 @@ void CAMainDlg::On32787() //考勤数据导出为excel
 {
 	CExcelOutDlg dlg;
 	dlg.DoModal();
+}
+
+
+void CAMainDlg::OnNMRClickTree1(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	CPoint _point;  
+    ::GetCursorPos(&_point);  
+    CMenu _menu;  
+    VERIFY(_menu.LoadMenu(IDR_MENU2));  
+    //::SetMenu(m_hWnd,&_menu);  
+    CMenu* _pPopmenu = _menu.GetSubMenu(0);  
+    ASSERT(_pPopmenu != NULL);  
+    _pPopmenu->TrackPopupMenu(TPM_RIGHTBUTTON|TPM_LEFTALIGN,_point.x,_point.y,this);  
+
+	*pResult = 0;
+}
+
+
+void CAMainDlg::On32792() //1x1
+{
+	SwitchView(1);
+}
+
+
+void CAMainDlg::On32793() //2x2
+{
+	SwitchView(2);
+}
+
+
+void CAMainDlg::On32794() //3x3
+{
+	SwitchView(3);
+}
+
+
+void CAMainDlg::On32795() //4x4
+{
+	SwitchView(4);
+}
+
+
+void CAMainDlg::On32788() //启动
+{
+	On32778();
+}
+
+
+void CAMainDlg::On32789() //暂停
+{
+	// TODO: 在此添加命令处理程序代码
+}
+
+
+void CAMainDlg::On32790() //停止
+{
+	On32780();
 }

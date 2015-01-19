@@ -1289,6 +1289,24 @@ BEGIN
     MENUITEM "关于",                          ID_32781
 END
 
+IDR_MENU2 MENU
+BEGIN
+    POPUP "启动"
+    BEGIN
+        MENUITEM "启动",                          ID_32788
+        MENUITEM "暂停",                          ID_32789
+        MENUITEM "停止",                          ID_32790
+        MENUITEM SEPARATOR
+        POPUP "宫格显示"
+        BEGIN
+            MENUITEM "1x1",                         ID_32792
+            MENUITEM "2x2",                         ID_32793
+            MENUITEM "3x3",                         ID_32794
+            MENUITEM "4x4",                         ID_32795
+        END
+    END
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //

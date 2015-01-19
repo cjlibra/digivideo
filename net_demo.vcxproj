@@ -231,8 +231,12 @@
     <CustomBuild Include="res\net_demo.rc2">
       <FileType>RC</FileType>
     </CustomBuild>
-    <CustomBuild Include="PlaybackDialog.htm" />
     <CustomBuild Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="PlaybackDialog.htm">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

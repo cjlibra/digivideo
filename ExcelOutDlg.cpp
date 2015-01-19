@@ -120,6 +120,30 @@ void CExcelOutDlg::OnBnClickedOk()
 
 	}
 	personpos = -1;
+
+	CFile out;
+	CFileDialog outDlg(FALSE, NULL, NULL, NULL, _T("EXCEL (*.xls)|*.xls|所有文件 (*.*)|*.*||"), NULL);
+    outDlg.m_ofn.lpstrTitle = _T("输出保存EXCEL文件");
+	if(outDlg.DoModal() == IDOK) {
+		if(out.Open(outDlg.GetPathName(), CFile::modeWrite | CFile::modeCreate)) {
+			CString excelhead = "姓名 \x09 上班时间\x09  下班时间\n";
+			out.Write(excelhead,excelhead.GetLength());
+			for (int i=0;i<personcount;i++){
+				out.Write(person[i].name,person[i].name.GetLength());
+				out.Write("\x09",1);
+				out.Write(person[i].earlytime,person[i].earlytime.GetLength());
+				out.Write("\x09",1);
+				out.Write(person[i].latetime,person[i].latetime.GetLength());
+				out.Write("\n",1);
+			}
+			out.Close();
+			MessageBox("保存文件成功", "搞定了", MB_ICONEXCLAMATION | MB_OK);
+			CDialogEx::OnOK();
+
+		} else {
+            MessageBox("保存文件失败", "失败了", MB_ICONSTOP | MB_OK);
+		}
+	}
 }
 static int _searchvideo0_callback(void * notused, int argc, char ** argv, char ** szColName)
 {
