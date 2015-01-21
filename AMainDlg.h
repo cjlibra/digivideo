@@ -37,6 +37,8 @@ public:
 	SYSTEMTIME stLocal;  
 	TCHAR chBuf[256];
 	int startvideocount;
+	int whichoneclick;
+	int setcustom;
 
 	void SwitchView(int percount);
 	void InitViewItemInfo();
@@ -61,4 +63,14 @@ public:
 	afx_msg void On32788();
 	afx_msg void On32789();
 	afx_msg void On32790();
+	afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
+	virtual BOOL PreTranslateMessage(MSG* pMsg);
+	afx_msg void On32988();
+	afx_msg void On32989();
+	afx_msg void On32990();
+	afx_msg void On327192();
+	afx_msg void On327193();
+	afx_msg void On327194();
+	afx_msg void On327195();
+	afx_msg void On32805();
 };

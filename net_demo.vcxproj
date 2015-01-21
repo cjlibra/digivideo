@@ -158,6 +158,7 @@
     <ClCompile Include="DlgVlost.cpp" />
     <ClCompile Include="DlgWorkSheet.cpp" />
     <ClCompile Include="ExcelOutDlg.cpp" />
+    <ClCompile Include="explorer1.cpp" />
     <ClCompile Include="IphostDlg.cpp" />
     <ClCompile Include="Kaoqing.cpp" />
     <ClCompile Include="net_demo.cpp" />
@@ -175,6 +176,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">stdafx.h</PrecompiledHeaderFile>
     </ClCompile>
+    <ClCompile Include="WebWeb.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="net_demo.rc" />
@@ -207,6 +209,7 @@
     <ClInclude Include="DlgVlost.h" />
     <ClInclude Include="DlgWorkSheet.h" />
     <ClInclude Include="ExcelOutDlg.h" />
+    <ClInclude Include="explorer1.h" />
     <ClInclude Include="howellnetsdk.h" />
     <ClInclude Include="HwNetSdk.h" />
     <ClInclude Include="IphostDlg.h" />
@@ -223,6 +226,7 @@
     <ClInclude Include="sqlite3.h" />
     <ClInclude Include="sqlite3ext.h" />
     <ClInclude Include="StdAfx.h" />
+    <ClInclude Include="WebWeb.h" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="focus_mask.bmp" />
@@ -243,7 +247,7 @@
   </ImportGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties RESOURCE_FILE="net_demo.rc" />
+      <UserProperties RESOURCE_FILE="net_demo.rc" _x007B_8856F961-340A-11D0-A96B-00C04FD705A2_x007D_="CExplorer1" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

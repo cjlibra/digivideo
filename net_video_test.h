@@ -11,6 +11,8 @@
 #pragma comment(lib,"flv_convert.lib")
 #include "StdAfx.h"
 
+#include "AMainDlg.h"
+
 typedef struct {
 	long len;
 	long type; //0-bbp frame,1-i frame,2-audio
@@ -40,6 +42,7 @@ class net_video_test
 public:
 	rfid_data_t t_rfid_data;
 	CString  ip;
+	CString filemovie;
 public:
 	net_video_test(USER_HANDLE handle,int slot)
 		:m_s_handle(INVALID_HANDLE),m_l_handle(handle),m_slot(slot)
@@ -135,7 +138,7 @@ public:
 #else
 		m_s_handle = HW_NET_OpenVideoEx2(m_l_handle,m_slot,is_sub,connect_mode,data_process,(long)this);
 #endif
-
+		
 		if(m_s_handle == INVALID_HANDLE)
 		{
 			return false;
@@ -144,8 +147,9 @@ public:
 		char head[40];
 		int len = 40;
 		BOOL ret = HW_NET_GetVideoHead(m_s_handle,head,40,&len);
-
+		 
 		m_p_handle = hwplay_open_stream(head,len,1024 * 1024,PLAY_LIVE);
+		
 		if(m_p_handle == INVALID_HANDLE)
 		{
 			HW_NET_CloseVideo(m_s_handle);
@@ -600,6 +604,8 @@ private:
 				ptest->t_rfid_data.len = rfid_data_len;				
 				ptest->t_rfid_data.tm = g_rfid_data.tm;
 				memcpy(ptest->t_rfid_data.buf,rfid_data,rfid_data_len);
+
+				
 			}
 		}
 	}

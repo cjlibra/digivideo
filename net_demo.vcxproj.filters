@@ -123,6 +123,12 @@
     <ClCompile Include="ExcelOutDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="WebWeb.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="explorer1.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="net_demo.rc">
@@ -257,6 +263,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ExcelOutDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WebWeb.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="explorer1.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -17,6 +17,7 @@ static int _searchren_callback(void * notused, int argc, char ** argv, char ** s
 typedef struct _PERSON{
 	CString name;
 	CString labelid;
+	CString workcode;
 	CString labelnum;
 	CString earlytime;
 	CString latetime;
@@ -80,7 +81,7 @@ void CExcelOutDlg::OnBnClickedOk()
 	personcount=0 ;
 	labelcount=0 ;
 	CAMainDlg *pWin = (CAMainDlg *) this->GetParent();
-	char sSQL6[255] = " select name,lableid from person  ;";
+	char sSQL6[255] = " select name,lableid ,workcode from person  ;";
 	char * pErrMsg = 0;	 
 	sqlite3_exec( pWin->db, sSQL6, _searchren_callback, 0, &pErrMsg);
 
@@ -125,11 +126,15 @@ void CExcelOutDlg::OnBnClickedOk()
 	CFileDialog outDlg(FALSE, NULL, NULL, NULL, _T("EXCEL (*.xls)|*.xls|所有文件 (*.*)|*.*||"), NULL);
     outDlg.m_ofn.lpstrTitle = _T("输出保存EXCEL文件");
 	if(outDlg.DoModal() == IDOK) {
-		if(out.Open(outDlg.GetPathName(), CFile::modeWrite | CFile::modeCreate)) {
-			CString excelhead = "姓名 \x09 上班时间\x09  下班时间\n";
+		CString tmpfilename = outDlg.GetPathName();
+		if (tmpfilename.Right(4) != ".xls") tmpfilename = tmpfilename+".xls";
+		if(out.Open(tmpfilename, CFile::modeWrite | CFile::modeCreate)) {
+			CString excelhead = "姓名 \x09 工号 \x09 上班时间\x09  下班时间\n";
 			out.Write(excelhead,excelhead.GetLength());
 			for (int i=0;i<personcount;i++){
 				out.Write(person[i].name,person[i].name.GetLength());
+				out.Write("\x09",1);
+				out.Write(person[i].workcode,person[i].workcode.GetLength());
 				out.Write("\x09",1);
 				out.Write(person[i].earlytime,person[i].earlytime.GetLength());
 				out.Write("\x09",1);
@@ -171,6 +176,7 @@ static int _searchren_callback(void * notused, int argc, char ** argv, char ** s
 
 	person[personcount].name = argv[0];
 	person[personcount].labelid=argv[1];
+	person[personcount].workcode=argv[2];
 	personcount++;
 	return 0;
 

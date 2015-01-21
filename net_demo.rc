@@ -910,6 +910,14 @@ BEGIN
     CONTROL         "",IDC_DATETIMEPICKER1,"SysDateTimePick32",DTS_RIGHTALIGN | DTS_LONGDATEFORMAT | WS_TABSTOP,107,57,100,15
 END
 
+IDD_A_WEBWEB DIALOGEX 0, 0, 316, 180
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Õ¯“≥≈‰÷√"
+FONT 12, "ÀŒÃÂ", 400, 0, 0x86
+BEGIN
+    CONTROL         "",IDC_EXPLORER1,"{8856F961-340A-11D0-A96B-00C04FD705A2}",WS_TABSTOP,117,66,60,25
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -1228,6 +1236,14 @@ BEGIN
         TOPMARGIN, 7
         BOTTOMMARGIN, 173
     END
+
+    IDD_A_WEBWEB, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 309
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 173
+    END
 END
 #endif    // APSTUDIO_INVOKED
 
@@ -1261,7 +1277,7 @@ BEGIN
     POPUP "≤Ÿ◊˜"
     BEGIN
         MENUITEM "∆Ù∂Ø",                          ID_32778
-        MENUITEM "‘›Õ£",                          ID_32779
+        MENUITEM "‘›Õ£",                          ID_32779, GRAYED
         MENUITEM "Õ£÷π",                          ID_32780
     END
     POPUP "≈‰÷√"
@@ -1270,6 +1286,7 @@ BEGIN
         MENUITEM "±Í«©≈‰÷√",                        ID_32772
         MENUITEM "…Ë±∏≈‰÷√",                        ID_32773
         MENUITEM SEPARATOR
+        MENUITEM "Õ¯“≥≈‰÷√",                        ID_32805
         MENUITEM "…„œÒª˙π¶ƒ‹≈‰÷√",                     ID_32777
         POPUP "π¨∏Òœ‘ æ"
         BEGIN
@@ -1294,7 +1311,7 @@ BEGIN
     POPUP "∆Ù∂Ø"
     BEGIN
         MENUITEM "∆Ù∂Ø",                          ID_32788
-        MENUITEM "‘›Õ£",                          ID_32789
+        MENUITEM "‘›Õ£",                          ID_32789, GRAYED
         MENUITEM "Õ£÷π",                          ID_32790
         MENUITEM SEPARATOR
         POPUP "π¨∏Òœ‘ æ"
@@ -1305,6 +1322,45 @@ BEGIN
             MENUITEM "4x4",                         ID_32795
         END
     END
+END
+
+IDR_MENU3 MENU
+BEGIN
+    POPUP "∆Ù∂Ø"
+    BEGIN
+        MENUITEM "∆Ù∂Ø",                          ID_32988
+        MENUITEM "‘›Õ£",                          ID_32989, GRAYED
+        MENUITEM "Õ£÷π",                          ID_32990
+        MENUITEM SEPARATOR
+        POPUP "π¨∏Òœ‘ æ"
+        BEGIN
+            MENUITEM "1x1",                         ID_327192
+            MENUITEM "2x2",                         ID_327193
+            MENUITEM "3x3",                         ID_327194
+            MENUITEM "4x4",                         ID_327195
+        END
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_A_WEBWEB DLGINIT
+BEGIN
+    IDC_EXPLORER1, 0x376, 160, 0
+0x0000, 0x0000, 0x004c, 0x0000, 0x0c67, 0x0000, 0x052b, 0x0000, 0x0000, 
+0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 
+0x0000, 0x0000, 0x004c, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0001, 
+0x0000, 0xd0e0, 0x0057, 0x3573, 0x11cf, 0x69ae, 0x0008, 0x2e2b, 0x6212, 
+0x0008, 0x0000, 0x0000, 0x0000, 0x004c, 0x0000, 0x1401, 0x0002, 0x0000, 
+0x0000, 0x00c0, 0x0000, 0x0000, 0x4600, 0x0080, 0x0000, 0x0000, 0x0000, 
+0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 
+0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0001, 0x0000, 
+0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 
+    0
 END
 
 

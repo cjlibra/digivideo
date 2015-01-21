@@ -182,7 +182,7 @@ void CDlgVcatch::OnBnClickedButton2()
 		long elapse_mov = timeSpan.GetTotalSeconds();
 		
 		msec = expi_second;
-		hwplay_stop(HANDLEL);
+		if (HANDLEL) hwplay_stop(HANDLEL);
 		HANDLEL = hwplay_open_local_file(filename);
 		int totalmsec ;
 		

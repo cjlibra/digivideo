@@ -44,6 +44,8 @@
 #define IDR_MENU1                       162
 #define IDD_A_EXCELOUT_DLG              163
 #define IDR_MENU2                       170
+#define IDR_MENU3                       171
+#define IDD_A_WEBWEB                    171
 #define IDC_VIDEO                       1000
 #define IDC_IPADDRESS1                  1001
 #define IDC_EDIT1                       1002
@@ -320,6 +322,7 @@
 #define IDC_STATIC8                     1210
 #define IDC_STATIC9                     1211
 #define IDC_STATIC10                    1212
+#define IDC_EXPLORER1                   1212
 #define IDC_STATIC11                    1213
 #define IDC_STATIC12                    1214
 #define IDC_STATIC13                    1215
@@ -351,14 +354,24 @@
 #define ID_32793                        32793
 #define ID_32794                        32794
 #define ID_32795                        32795
+#define ID_32888                        32796
+#define ID_32889                        32797
+#define ID_32988                        32798
+#define ID_32989                        32799
+#define ID_32990                        32800
+#define ID_327192                       32801
+#define ID_327193                       32802
+#define ID_327194                       32803
+#define ID_327195                       32804
+#define ID_32805                        32805
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        171
-#define _APS_NEXT_COMMAND_VALUE         32796
-#define _APS_NEXT_CONTROL_VALUE         1212
+#define _APS_NEXT_RESOURCE_VALUE        173
+#define _APS_NEXT_COMMAND_VALUE         32806
+#define _APS_NEXT_CONTROL_VALUE         1213
 #define _APS_NEXT_SYMED_VALUE           104
 #endif
 #endif

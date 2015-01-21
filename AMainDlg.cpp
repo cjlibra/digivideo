@@ -1,6 +1,8 @@
 // AMainDlg.cpp : 实现文件
 //
 
+ 
+
 #include "stdafx.h"
 #include "net_demo.h"
 #include "AMainDlg.h"
@@ -13,6 +15,10 @@
 #include "net_demoDlg.h"
 #include "DlgRenyuan.h"
 #include "ExcelOutDlg.h"
+#include "WebWeb.h"
+
+
+
 
 CAMainDlg *thisp;
 static   int g_window_count = 0;
@@ -53,6 +59,7 @@ CAMainDlg::CAMainDlg(CWnd* pParent /*=NULL*/)
 {
 	thisp = this;
 	startvideocount = 0;
+	setcustom = -1;
 }
 
 CAMainDlg::~CAMainDlg()
@@ -71,6 +78,7 @@ CAMainDlg::~CAMainDlg()
 			test[i] = NULL;
 		}
 	}
+	 
 }
 
 void CAMainDlg::DoDataExchange(CDataExchange* pDX)
@@ -104,6 +112,15 @@ BEGIN_MESSAGE_MAP(CAMainDlg, CDialogEx)
 	ON_COMMAND(ID_32788, &CAMainDlg::On32788)
 	ON_COMMAND(ID_32789, &CAMainDlg::On32789)
 	ON_COMMAND(ID_32790, &CAMainDlg::On32790)
+	ON_WM_RBUTTONDOWN()
+	ON_COMMAND(ID_32988, &CAMainDlg::On32988)
+	ON_COMMAND(ID_32989, &CAMainDlg::On32989)
+	ON_COMMAND(ID_32990, &CAMainDlg::On32990)
+	ON_COMMAND(ID_327192, &CAMainDlg::On327192)
+	ON_COMMAND(ID_327193, &CAMainDlg::On327193)
+	ON_COMMAND(ID_327194, &CAMainDlg::On327194)
+	ON_COMMAND(ID_327195, &CAMainDlg::On327195)
+	ON_COMMAND(ID_32805, &CAMainDlg::On32805)
 END_MESSAGE_MAP()
 
 
@@ -578,7 +595,7 @@ void CAMainDlg::On32778() //启动ip摄像机
 
 			//SetTimer(TIMER_HEARTBEAR,5000,NULL);
 
-			AfxMessageBox("登录成功!");
+			//AfxMessageBox("登录成功!");
 			SYSTEMTIME stTime;
 
             GetLocalTime(&stTime);
@@ -598,6 +615,7 @@ void CAMainDlg::On32778() //启动ip摄像机
 				viewiteminfo[whichviewitem].ptest = test[startvideocount ];
 				test[startvideocount ]->ip = ip;
 				test[startvideocount ] ->start_preview(viewiteminfo[whichviewitem].pwin->m_hWnd,0);//m_cbo_connect_mode.GetCurSel());
+				//test[startvideocount ] ->start_preview(NULL,0);//m_cbo_connect_mode.GetCurSel());
 				
 				test[startvideocount ] ->register_draw(draw_fun,(long)test[startvideocount ]);
 				test[startvideocount ] ->enable_audio_preview(1);
@@ -608,6 +626,7 @@ void CAMainDlg::On32778() //启动ip摄像机
 					   stLocal.wHour, stLocal.wMinute, stLocal.wSecond,  
 					   stLocal.wMilliseconds,stLocal.wDayOfWeek);  
 				sprintf(filemovie,"movie\\%s+%d+%s.mp4", ip,0,chBuf);
+				test[startvideocount ]->filemovie = filemovie;
 				test[startvideocount]->save_to_file(filemovie);
 				startvideocount++;
 			}
@@ -615,7 +634,8 @@ void CAMainDlg::On32778() //启动ip摄像机
 		}
 		else
 		{
-			AfxMessageBox("登录失败!");
+			CString tmpstr = "登录 ";
+			AfxMessageBox(tmpstr+ip+" 失败!");
 		}
 	}
 }
@@ -758,7 +778,7 @@ void CAMainDlg::GetRfidPic(CString str, void *pptest)
 			labelinfo[sumcount].labelleft = 1;
 			labelinfo[sumcount].timeLast = stLocal;
 			labelinfo[sumcount].ip  = ntest->ip;
-			sprintf(sSQL6,"insert into vinfo(lablenum,starttime,filename,endflag,ip) values('%s','%s','%s',%d,'%s');",labelnum,datetimestr,filemovie,0,ntest->ip);
+			sprintf(sSQL6,"insert into vinfo(lablenum,starttime,filename,endflag,ip) values('%s','%s','%s',%d,'%s');",labelnum,datetimestr,ntest->filemovie,0,ntest->ip);
 			ret = sqlite3_exec( thisp->db, sSQL6, 0, 0, &pErrMsg);				  
 			if ( ret != SQLITE_OK ){				 
 				AfxMessageBox(sqlite3_errmsg(thisp->db));
@@ -822,17 +842,22 @@ void CAMainDlg::GetRfidPic(CString str, void *pptest)
 
 int CAMainDlg::SearchViewItemIdle()
 {
-	for (int i=0;i<16;i++){
-		if (viewiteminfo[i].idle  == 0){
-			return i;
+	if (setcustom == -1){
+		for (int i=0;i<16;i++){
+			if (viewiteminfo[i].idle  == 0){
+				return i;
+
+			}
+
+
 
 		}
-
-
-
+		return -1;
 	}
 
-	return -1;
+	return setcustom;
+
+	
 
 }
 void CAMainDlg::InitViewItemInfo()
@@ -1017,6 +1042,14 @@ void CAMainDlg::On32787() //考勤数据导出为excel
 
 void CAMainDlg::OnNMRClickTree1(NMHDR *pNMHDR, LRESULT *pResult)
 {
+	CPoint   pt;     
+    UINT   nFlags;     
+    ::GetCursorPos(&pt);     
+    ::ScreenToClient(m_mainiptree.m_hWnd, &pt);     
+    HTREEITEM   hItem   =   m_mainiptree.HitTest(pt,&nFlags);  
+
+    if(hItem == NULL)  return;   //检查是否有item选中
+
 	CPoint _point;  
     ::GetCursorPos(&_point);  
     CMenu _menu;  
@@ -1054,19 +1087,135 @@ void CAMainDlg::On32795() //4x4
 }
 
 
-void CAMainDlg::On32788() //启动
+void CAMainDlg::On32788() //列表menu启动
 {
 	On32778();
 }
 
 
-void CAMainDlg::On32789() //暂停
+void CAMainDlg::On32789() //列表menu暂停
 {
 	// TODO: 在此添加命令处理程序代码
 }
 
 
-void CAMainDlg::On32790() //停止
+void CAMainDlg::On32790() //列表menu停止
 {
 	On32780();
+}
+
+
+void CAMainDlg::OnRButtonDown(UINT nFlags, CPoint point)
+{
+	// TODO: 在此添加消息处理程序代码和/或调用默认值
+
+	CDialogEx::OnRButtonDown(nFlags, point);
+}
+
+
+BOOL CAMainDlg::PreTranslateMessage(MSG* pMsg)
+{
+	 if(pMsg->message == WM_RBUTTONDOWN){
+
+		 for (int i=0;i<16;i++){
+			 RECT rect;
+			 viewiteminfo[i].pwin->GetWindowRect(&rect);
+			 if (pMsg->pt.x>rect.left && pMsg->pt.x <rect.right &&   pMsg->pt.y >rect.top &&  pMsg->pt.y <rect.bottom){
+				
+				CMenu _menu;  
+				VERIFY(_menu.LoadMenu(IDR_MENU3));  
+				//::SetMenu(m_hWnd,&_menu);  
+				CMenu* _pPopmenu = _menu.GetSubMenu(0);  
+				ASSERT(_pPopmenu != NULL);  
+				 
+				if (viewiteminfo[i].idle == 1){
+					_pPopmenu->EnableMenuItem(ID_32988,  MF_GRAYED);//menu启动为灰
+					_pPopmenu->EnableMenuItem(ID_32990,  MF_ENABLED);//menu停止为能
+				}else{
+					_pPopmenu->EnableMenuItem(ID_32988,  MF_ENABLED);//menu启动为能
+					_pPopmenu->EnableMenuItem(ID_32990,  MF_GRAYED);//menu停止为灰
+				}
+				_pPopmenu->TrackPopupMenu(TPM_RIGHTBUTTON|TPM_LEFTALIGN,pMsg->pt.x,pMsg->pt.y,this);
+				whichoneclick = i;
+				break;
+			 }
+		 }
+		 
+		 
+			 
+			
+		 
+
+	 }
+
+	return CDialogEx::PreTranslateMessage(pMsg);
+}
+
+
+void CAMainDlg::On32988() //menu 启动
+{
+	
+	setcustom = whichoneclick;
+	On32778(); //启动ip摄像机
+	setcustom = -1;
+}
+
+
+void CAMainDlg::On32989() //menu 暂停
+{
+	// TODO: 在此添加命令处理程序代码
+}
+
+
+void CAMainDlg::On32990() //menu停止
+{
+	viewiteminfo[whichoneclick].ptest->stop_preview();
+	//delete viewiteminfo[whichoneclick].ptest;
+	viewiteminfo[whichoneclick].ip = "";
+	viewiteminfo[whichoneclick].ptest = NULL;
+	viewiteminfo[whichoneclick].idle  = 0;
+}
+
+
+void CAMainDlg::On327192()//1x1
+{
+	SwitchView(1);
+}
+
+
+void CAMainDlg::On327193()//2x2
+{
+	SwitchView(2);
+}
+
+
+void CAMainDlg::On327194()//3x3
+{
+	SwitchView(3);
+}
+
+
+void CAMainDlg::On327195() //4x4
+{
+	SwitchView(4);
+}
+
+
+void CAMainDlg::On32805()//网页配置
+{
+	HTREEITEM  hItem = m_mainiptree.GetSelectedItem();
+	if (hItem == NULL){
+		AfxMessageBox("请选择ip");
+		return;
+	}
+	CString tmp = m_mainiptree.GetItemText(hItem);
+	if (tmp == "摄像机组") {
+
+		AfxMessageBox("请选择ip");
+		return;
+	}
+
+	CWebWeb dlg;
+	dlg.url = tmp;
+	dlg.DoModal();
 }
