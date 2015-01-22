@@ -17,6 +17,9 @@
 #include "ExcelOutDlg.h"
 #include "WebWeb.h"
 
+#include "LoginDlg.h"
+#include "SetPass.h"
+
 
 
 
@@ -121,6 +124,8 @@ BEGIN_MESSAGE_MAP(CAMainDlg, CDialogEx)
 	ON_COMMAND(ID_327194, &CAMainDlg::On327194)
 	ON_COMMAND(ID_327195, &CAMainDlg::On327195)
 	ON_COMMAND(ID_32805, &CAMainDlg::On32805)
+	ON_COMMAND(ID_32776, &CAMainDlg::On32776)
+	ON_COMMAND(ID_32806, &CAMainDlg::On32806)
 END_MESSAGE_MAP()
 
 
@@ -474,6 +479,10 @@ void CAMainDlg::OutInitFile()
 BOOL CAMainDlg::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
+
+	
+
+
 	SetTimer(3,1000*10,NULL);
 	OutInitFile();
 
@@ -501,6 +510,12 @@ BOOL CAMainDlg::OnInitDialog()
 
 	HW_NET_Init(5198);	
 	//HW_NET_SetUdpBasePort(8000);
+
+	ShowWindow(0);
+	goingnow = 0;
+	On32776();//显示登陆界面
+	goingnow = 1;
+	
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// 异常: OCX 属性页应返回 FALSE
@@ -1217,5 +1232,27 @@ void CAMainDlg::On32805()//网页配置
 
 	CWebWeb dlg;
 	dlg.url = tmp;
+	dlg.DoModal();
+}
+
+
+void CAMainDlg::On32776() //登出
+{
+	ShowWindow(0);
+	CLoginDlg dlg;
+	dlg.goingnow = goingnow;
+	dlg.DoModal();
+}
+
+
+void CAMainDlg::OnExit(void)
+{
+	CDialogEx::OnCancel();
+}
+
+
+void CAMainDlg::On32806() //修改密码
+{
+	CSetPass dlg;
 	dlg.DoModal();
 }

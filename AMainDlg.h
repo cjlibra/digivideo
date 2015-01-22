@@ -39,6 +39,7 @@ public:
 	int startvideocount;
 	int whichoneclick;
 	int setcustom;
+	int goingnow;
 
 	void SwitchView(int percount);
 	void InitViewItemInfo();
@@ -73,4 +74,7 @@ public:
 	afx_msg void On327194();
 	afx_msg void On327195();
 	afx_msg void On32805();
+	afx_msg void On32776();
+	void OnExit(void);
+	afx_msg void On32806();
 };
