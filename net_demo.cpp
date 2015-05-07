@@ -9,6 +9,8 @@
 
 #include "AMainDlg.h"
 
+#include "DemoRfDlg.h"
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -52,6 +54,10 @@ BOOL Cnet_demoApp::InitInstance()
 	CWinApp::InitInstance();
 
 	AfxEnableControlContainer();
+
+	CDemoRfDlg  dlgdlg;
+	dlgdlg.DoModal();
+	return FALSE;
 
 	// 标准初始化
 	// 如果未使用这些功能并希望减小

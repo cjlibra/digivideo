@@ -47,8 +47,8 @@
 #define IDR_MENU3                       171
 #define IDD_A_WEBWEB                    171
 #define IDD_A_LOGINDLG                  173
-#define IDD_DIALOG1                     174
 #define IDD_A_SETPASS                   174
+#define IDD_DIALOG1                     175
 #define IDC_VIDEO                       1000
 #define IDC_IPADDRESS1                  1001
 #define IDC_EDIT1                       1002
@@ -327,11 +327,19 @@
 #define IDC_STATIC10                    1212
 #define IDC_EXPLORER1                   1212
 #define IDC_STATIC11                    1213
+#define IDC_VIDEO_DEMORF                1213
 #define IDC_STATIC12                    1214
+#define IDC_PIC_DEMORF                  1214
 #define IDC_STATIC13                    1215
+#define IDC_BTLOGIN_RF                  1215
 #define IDC_STATIC14                    1216
+#define IDC_IPADDRESS_DEMORF            1216
 #define IDC_STATIC15                    1217
+#define IDC_BUTTON1_DEMORF              1217
 #define IDC_STATIC16                    1218
+#define IDC_IPADDRESS_RFIP              1218
+#define IDC_BUT_UNCON                   1219
+#define IDC_BTLOGIN_DEMORF              1220
 #define ID_32771                        32771
 #define ID_32772                        32772
 #define ID_32773                        32773
@@ -373,9 +381,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        175
+#define _APS_NEXT_RESOURCE_VALUE        176
 #define _APS_NEXT_COMMAND_VALUE         32807
-#define _APS_NEXT_CONTROL_VALUE         1213
+#define _APS_NEXT_CONTROL_VALUE         1221
 #define _APS_NEXT_SYMED_VALUE           104
 #endif
 #endif
