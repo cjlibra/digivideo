@@ -27,7 +27,7 @@ CAMainDlg *thisp;
 static   int g_window_count = 0;
 static  long g_server_version = 0;
 static net_video_test* test[1024] = {NULL};
-static char filemovie[256];
+
 static UINT64 g_recved_len = 0;
 static UINT64 g_total_len = 0;
 
@@ -640,6 +640,7 @@ void CAMainDlg::On32778() //Æô¶¯ipÉãÏñ»ú
 					   stLocal.wYear, stLocal.wMonth, stLocal.wDay,  
 					   stLocal.wHour, stLocal.wMinute, stLocal.wSecond,  
 					   stLocal.wMilliseconds,stLocal.wDayOfWeek);  
+				char filemovie[256]={0};
 				sprintf(filemovie,"movie\\%s+%d+%s.mp4", ip,0,chBuf);
 				test[startvideocount ]->filemovie = filemovie;
 				test[startvideocount]->save_to_file(filemovie);
@@ -734,7 +735,7 @@ void CALLBACK CAMainDlg::draw_fun(PLAY_HANDLE handle,HDC hDc,LONG nUser )
 void CAMainDlg::GetRfidPic(CString str, void *pptest)
 {
 	net_video_test *ntest = (net_video_test*) pptest;
-	static char tmpuid[20];
+	char tmpuid[20]={0};
 	
 	char filebmp[255];
    // CString filebmp;
@@ -817,7 +818,7 @@ void CAMainDlg::GetRfidPic(CString str, void *pptest)
 		    return;
 	    }
 		labelinfo[bingoindex].timeLast = stLocal;
-		sprintf(sSQL6,"insert into vinfo(lablenum,starttime,filename,endflag,ip) values('%s','%s','%s',%d,'%s');",labelnum,datetimestr,filemovie,0,ntest->ip);
+		sprintf(sSQL6,"insert into vinfo(lablenum,starttime,filename,endflag,ip) values('%s','%s','%s',%d,'%s');",labelnum,datetimestr,ntest->filemovie,0,ntest->ip);
 		ret = sqlite3_exec( thisp->db, sSQL6, 0, 0, &pErrMsg);
 	    if ( ret != SQLITE_OK ){		    
 		    AfxMessageBox(sqlite3_errmsg(thisp->db));

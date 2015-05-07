@@ -937,7 +937,7 @@ void Cnet_demoDlg::OnBnClickedBtlogin()
 }
 
 
-void Cnet_demoDlg::OnBnClickedBtconnect()
+void Cnet_demoDlg::OnBnClickedBtconnect() //连接主码流
 {
 	// TODO: 在此添加控件通知处理程序代码
 	if(test)
@@ -1365,7 +1365,7 @@ void Cnet_demoDlg::OnChkAudioPreview()
 }
 
 
-void Cnet_demoDlg::OnBtconnectSub() 
+void Cnet_demoDlg::OnBtconnectSub() //连接子码流
 {
 	// TODO: Add your control notification handler code here
 	if(test)
