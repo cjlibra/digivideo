@@ -23,17 +23,101 @@ static net_video_test* test = NULL;
 
 static char DevID[32];
 
-INT32S GetInventoryCallback(RFID_RADIO_HANDLE	handle, void *context)
+static CDemoRfDlg *thisp;
+
+typedef struct {
+	CString epc;
+	SYSTEMTIME lasttime;
+	int empty ;
+}lable_t;
+
+
+static lable_t lstatus[1024];
+
+
+int getSecondsCha(SYSTEMTIME last,SYSTEMTIME now)
+{
+	COleDateTime dTimeF(last); 
+    COleDateTime dTimeS(now); 
+    COleDateTimeSpan dTimeSpan = dTimeS - dTimeF; 
+    int nSecnonSpan = 0;
+    nSecnonSpan =dTimeSpan.GetTotalSeconds();
+    return nSecnonSpan ;
+
+}
+void makeCopyTime(SYSTEMTIME &two ,SYSTEMTIME &one)
 {
 
-	INVENTORY_REPORT_RESULT *data = (INVENTORY_REPORT_RESULT *)context;
+   two.wYear  =  one.wYear;
+   two.wMonth  = one.wMonth;
+   two.wDayOfWeek = one.wDayOfWeek;
+   two.wDay = one.wDay;
+   two.wHour = one.wHour;
+   two.wMinute = one.wMinute;
+   two.wSecond = one.wSecond;
+   two.wMilliseconds =one.wMilliseconds;
 
+
+}
+bool isNeedShot(CString epc)
+{
+	
+	SYSTEMTIME stLocal;
+	
+	for(int i=0;i<1024;i++){
+
+		if (lstatus[i].epc == epc ) {
+			::GetLocalTime(&stLocal); 
+			int secondscha = getSecondsCha(lstatus[i].lasttime,stLocal);
+			if (secondscha > 20){
+				makeCopyTime(lstatus[i].lasttime , stLocal);
+				TRACE("%s---->20 %d\n",epc ,stLocal.wMilliseconds);
+				return true;
+			}else{
+				makeCopyTime(lstatus[i].lasttime , stLocal);
+				TRACE("%s----<20 %d\n",epc,stLocal.wMilliseconds);
+				return false;
+
+			}
+			 
+		}
+
+	}
+
+	for(int i=0;i<1024;i++){
+		if (lstatus[i].empty == 0){
+			lstatus[i].empty = 1;
+			lstatus[i].epc = epc;
+			::GetLocalTime(&stLocal); 
+			makeCopyTime(lstatus[i].lasttime , stLocal);
+			TRACE("%s----empty=0  %d\n",epc,stLocal.wMilliseconds);
+			return true;
+
+
+
+
+		}
+
+	}
+
+	return false;
+
+}
+
+INT32S GetInventoryCallback(RFID_RADIO_HANDLE	handle, void *context)
+{
+	
+	INVENTORY_REPORT_RESULT *data = (INVENTORY_REPORT_RESULT *)context;
+	SYSTEMTIME stLocal;
+	::GetLocalTime(&stLocal); 
+	
+
+	
+	
 	//MySingleTagInfo report;
 	//memcpy(report.cid, data->EPC, 1024);
-	for (int i=0;i<strlen(data->EPC);i++)
-	TRACE("%02X ",*(data->EPC+i));
-	TRACE("\n");
-	TRACE("-------------------------------------------------------\n");
+	 
+	 
 	/*
 	report.nAntenna = atoi(data->AntennaID);
 	report.nCardType = 2;
@@ -49,7 +133,45 @@ INT32S GetInventoryCallback(RFID_RADIO_HANDLE	handle, void *context)
 	CDlgInventory *dlgInv = dlg->getDlgInv();
 
 	*/
+	CWnd* pWnd = thisp->GetDlgItem(IDC_PIC_DEMORF);
+	 
+	CDC* dc = pWnd->GetDC();;
+	dc->SetTextColor(RGB(255,0,0));		
+	dc->SetBkMode(TRANSPARENT);	
 
+	char epcstr[100]={0};
+	CString tmp;
+	tmp.Format("%s", data->EPC);
+	sprintf(epcstr,"%s",data->EPC);
+
+	if (isNeedShot(tmp) == false) return 0;
+	
+	char chBuf[255]={0};
+	char filebmp[1024]={0};
+	 
+			   
+    wsprintf(chBuf,_T("%u-%u-%u %u-%u-%u %u %d"), 
+            stLocal.wYear, stLocal.wMonth, stLocal.wDay,  
+            stLocal.wHour, stLocal.wMinute, stLocal.wSecond,  
+            stLocal.wMilliseconds,stLocal.wDayOfWeek);  
+	sprintf(filebmp,"%s+%s.bmp",epcstr,chBuf);
+	bool result;
+	if (test!=NULL){
+		result = test->save_to_bmp(filebmp);
+	}
+	if (result == true){
+		thisp->Show_picture(filebmp);
+	}
+    RECT rt;
+	     
+	pWnd->GetClientRect(&rt);
+	rt.top = rt.bottom - 20;
+	dc->DrawText(epcstr ,&rt,DT_BOTTOM | DT_LEFT);	
+	thisp->ReleaseDC(dc);
+
+	 
+
+	
 	
 	
 	return 0;
@@ -65,11 +187,30 @@ IMPLEMENT_DYNAMIC(CDemoRfDlg, CDialogEx)
 CDemoRfDlg::CDemoRfDlg(CWnd* pParent /*=NULL*/)
 	: CDialogEx(CDemoRfDlg::IDD, pParent)
 {
+	thisp = this;
+	for (int i=0 ;i<1024;i++){
+        lstatus[i].epc="";
+		::GetLocalTime(&lstatus[i].lasttime);
+		lstatus[i].empty = 0;
 
+
+	}
 }
 
 CDemoRfDlg::~CDemoRfDlg()
 {
+	if (test != NULL) {
+		// test->stop_preview();
+		 delete test;
+		 test=NULL;
+
+	}
+	BOOL val;
+	if (g_server_id != INVALID_HANDLE){
+	    val = HW_NET_Logout (g_server_id ) ;
+		val = 0;
+		val = HW_NET_Release();
+	}
 }
 
 void CDemoRfDlg::DoDataExchange(CDataExchange* pDX)
@@ -86,6 +227,7 @@ BEGIN_MESSAGE_MAP(CDemoRfDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON1_DEMORF, &CDemoRfDlg::OnBnClickedButton1Demorf)
 	ON_BN_CLICKED(IDC_BTLOGIN_RF, &CDemoRfDlg::OnBnClickedBtloginRf)
 	ON_BN_CLICKED(IDC_BUT_UNCON, &CDemoRfDlg::OnBnClickedButUncon)
+	ON_BN_CLICKED(IDC_BUTTON_STOP, &CDemoRfDlg::OnBnClickedButtonStop)
 END_MESSAGE_MAP()
 
 
@@ -272,7 +414,7 @@ void CDemoRfDlg::OnBnClickedBtloginRf()
 	
 	int re = Connect(ip,DevID , 7880);
 	if (re == 0){
-		AfxMessageBox("suscess");
+		//AfxMessageBox("suscess");
 
 	}else{
 
@@ -280,21 +422,12 @@ void CDemoRfDlg::OnBnClickedBtloginRf()
 		return;
 
 	}
-	int re1 = ISO_6C_AutoReportTag( DevID, GetInventoryCallback, TRUE);
-	if (re1 == 0){
-		AfxMessageBox("auto suscess");
 
-	}else{
-
-		AfxMessageBox("auto fail");
-		return;
-
-	}
 	re = -1;
 	re = ISO_6C_StartPeriodInventory(DevID, GetInventoryCallback,TRUE);
 
 	if (re == 0){
-		AfxMessageBox("ISO suscess");
+	//	AfxMessageBox("ISO suscess");
 
 	}else{
 
@@ -302,7 +435,16 @@ void CDemoRfDlg::OnBnClickedBtloginRf()
 		return;
 
 	}
+		int re1 = ISO_6C_AutoReportTag( DevID, GetInventoryCallback, TRUE);
+	if (re1 == 0){
+	//	AfxMessageBox("auto suscess");
 
+	}else{
+
+		AfxMessageBox("auto fail");
+		return;
+
+	}
 
 
 }
@@ -335,4 +477,22 @@ void CDemoRfDlg::OnBnClickedButUncon()
 
 
 	
+}
+
+
+void CDemoRfDlg::OnBnClickedButtonStop()
+{
+	if (test != NULL) {
+		// test->stop_preview();
+		 delete test;
+		 test=NULL;
+
+	}
+	BOOL val;
+	if (g_server_id != INVALID_HANDLE){
+	    val = HW_NET_Logout (g_server_id ) ;
+		val = 0;
+		val = HW_NET_Release();
+		g_server_id = INVALID_HANDLE;
+	}
 }

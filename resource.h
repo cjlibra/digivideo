@@ -340,6 +340,7 @@
 #define IDC_IPADDRESS_RFIP              1218
 #define IDC_BUT_UNCON                   1219
 #define IDC_BTLOGIN_DEMORF              1220
+#define IDC_BUTTON_STOP                 1221
 #define ID_32771                        32771
 #define ID_32772                        32772
 #define ID_32773                        32773
@@ -383,7 +384,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        176
 #define _APS_NEXT_COMMAND_VALUE         32807
-#define _APS_NEXT_CONTROL_VALUE         1221
+#define _APS_NEXT_CONTROL_VALUE         1222
 #define _APS_NEXT_SYMED_VALUE           104
 #endif
 #endif

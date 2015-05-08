@@ -32,4 +32,5 @@ public:
 	afx_msg void OnBnClickedBtloginRf();
 	CIPAddressCtrl m_IP_RFREADER;
 	afx_msg void OnBnClickedButUncon();
+	afx_msg void OnBnClickedButtonStop();
 };
