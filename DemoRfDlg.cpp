@@ -437,7 +437,7 @@ void CDemoRfDlg::OnBnClickedBtloginRf()
 	}
 		int re1 = ISO_6C_AutoReportTag( DevID, GetInventoryCallback, TRUE);
 	if (re1 == 0){
-	//	AfxMessageBox("auto suscess");
+		AfxMessageBox("auto suscess");
 
 	}else{
 
